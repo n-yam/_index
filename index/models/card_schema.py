@@ -1,6 +1,6 @@
 from marshmallow import fields
 
-from index.camel_case_schema import CamelCaseSchema
+from index.models.camel_case_schema import CamelCaseSchema
 
 
 class CardSchema(CamelCaseSchema):

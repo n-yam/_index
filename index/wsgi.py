@@ -1,8 +1,8 @@
 from flask import Flask, request
 from sqlalchemy.orm import declarative_base
 
-from index.card import Card
-from index.card_schema import CardSchema
+from index.models.card import Card
+from index.models.card_schema import CardSchema
 from index.database import get_session
 
 app = Flask(__name__)
