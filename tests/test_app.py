@@ -16,8 +16,8 @@ def test_card_post():
 
 def test_card_get_all():
     # Post
-    front_text = "[GET] THIS IS FRONT TEXT"
-    back_text = "[GET] THIS IS BACK TEXT"
+    front_text = "[GET_ALL] THIS IS FRONT TEXT"
+    back_text = "[GET_ALL] THIS IS BACK TEXT"
     card_post(front_text, back_text)
 
     # Get all
@@ -27,6 +27,22 @@ def test_card_get_all():
     assert response.status_code == 200
     assert response.json[0]["frontText"] == front_text
     assert response.json[0]["backText"] == back_text
+
+
+def test_card_get():
+    # Post
+    front_text = "[GET] THIS IS FRONT TEXT"
+    back_text = "[GET] THIS IS BACK TEXT"
+    response = card_post(front_text, back_text)
+    id = response.json["id"]
+
+    # Get
+    url = "/api/cards/{}".format(id)
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert response.json["frontText"] == front_text
+    assert response.json["backText"] == back_text
 
 
 def card_post(front_text, back_text):

@@ -25,7 +25,15 @@ def card_post():
 def card_get_all():
 
     cards = card_service.get_all()
-
     json = CardSchema(many=True).dump(cards)
+
+    return json
+
+
+@card_controller.get("/api/cards/<id>")
+def card_get(id):
+
+    card = card_service.get(id)
+    json = CardSchema().dump(card)
 
     return json

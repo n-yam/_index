@@ -38,3 +38,17 @@ class CardService:
             session.close()
 
         return cards
+
+    def get(self, id):
+        session = get_session()
+
+        try:
+            card = session.get(Card, id)
+
+        except Exception as e:
+            raise e
+
+        finally:
+            session.close()
+
+        return card
