@@ -15,9 +15,16 @@ def card_post():
     card = Card(front_text=front_text, back_text=back_text)
 
     session = get_session()
-    session.add(card)
-    card_saved = session.query(Card).order_by(Card.id.desc()).first()
-    session.commit()
+
+    try:
+        session.add(card)
+        session.commit()
+        card_saved = session.query(Card).order_by(Card.id.desc()).first()
+    except Exception as e:
+        session.rollback()
+        raise e
+    finally:
+        session.close()
 
     card_schema = CardSchema()
     json = card_schema.dump(card_saved)
