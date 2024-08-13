@@ -1,4 +1,4 @@
-from main import wsgi
+from index import wsgi
 
 
 app = wsgi.get_app()

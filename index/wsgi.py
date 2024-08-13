@@ -3,8 +3,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 
-from main.card import Card
-from main.card_schema import CardSchema
+from index.card import Card
+from index.card_schema import CardSchema
 
 app = Flask(__name__)
 engine = create_engine("sqlite:////tmp/index.db")
