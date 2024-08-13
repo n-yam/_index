@@ -1,13 +1,11 @@
 from flask import Flask, request
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 
 from index.card import Card
 from index.card_schema import CardSchema
+from index.database import get_session
 
 app = Flask(__name__)
-engine = create_engine("sqlite:////tmp/index.db")
 Base = declarative_base()
 
 
@@ -18,9 +16,7 @@ def card_post():
 
     card = Card(front_text=front_text, back_text=back_text)
 
-    # Create session
-    SessionClass = sessionmaker(engine)
-    session = SessionClass()
+    session = get_session()
     session.add(card)
     card_saved = session.query(Card).order_by(Card.id.desc()).first()
     session.commit()

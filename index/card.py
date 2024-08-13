@@ -1,7 +1,8 @@
 from sqlalchemy.schema import Column
 from sqlalchemy.types import Integer, String
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import create_engine
+
+from index.database import get_engine
 
 
 Base = declarative_base()
@@ -23,5 +24,5 @@ class Card(Base):
         return self.back_text
 
 
-engine = create_engine("sqlite:////tmp/index.db")
+engine = get_engine()
 Base.metadata.create_all(engine)
