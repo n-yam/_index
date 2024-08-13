@@ -2,7 +2,7 @@ from index.models.card import Card
 from index.database import get_session
 
 
-class DeckService:
+class CardService:
     def add(self, card):
         session = get_session()
 

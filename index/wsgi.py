@@ -1,6 +1,6 @@
 from flask import Flask
 
-from index.controllers.deck_controller import deck_controller
+from index.controllers.card_controller import card_controller
 
 app = Flask(__name__)
-app.register_blueprint(deck_controller)
+app.register_blueprint(card_controller)
