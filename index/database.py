@@ -1,9 +1,10 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
+from index import config
 from index.models.base import Base
 
-engine = create_engine("sqlite:////tmp/index.db")
+engine = create_engine(config.DATABASE_URL)
 Base.metadata.create_all(engine)  # Create tables
 
 
