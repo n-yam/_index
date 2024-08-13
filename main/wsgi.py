@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.schema import Column
 from sqlalchemy.types import Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 
 
 app = Flask(__name__)
@@ -24,6 +25,16 @@ class Card(Base):
 Base.metadata.create_all(engine)
 
 
+class CardSchema(SQLAlchemySchema):
+    class Meta:
+        model = Card
+        load_instance = True
+
+    card_id = auto_field()
+    front_text = auto_field()
+    back_text = auto_field()
+
+
 @app.post("/api/cards")
 def card_post():
     front_text = request.form["frontText"]
@@ -35,10 +46,13 @@ def card_post():
     SessionClass = sessionmaker(engine)
     session = SessionClass()
     session.add(card)
-    session.query(Card).order_by(Card.card_id.desc()).first()
+    card_saved = session.query(Card).order_by(Card.card_id.desc()).first()
     session.commit()
 
-    return "OK"
+    card_schema = CardSchema()
+    json = card_schema.dump(card_saved)
+
+    return json
 
 
 def get_app():
