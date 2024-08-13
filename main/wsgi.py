@@ -22,7 +22,7 @@ def card_post():
     SessionClass = sessionmaker(engine)
     session = SessionClass()
     session.add(card)
-    card_saved = session.query(Card).order_by(Card.card_id.desc()).first()
+    card_saved = session.query(Card).order_by(Card.id.desc()).first()
     session.commit()
 
     card_schema = CardSchema()

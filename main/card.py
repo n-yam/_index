@@ -9,9 +9,18 @@ Base = declarative_base()
 
 class Card(Base):
     __tablename__ = "cards"
-    card_id = Column(Integer, primary_key=True, autoincrement=True)
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
     front_text = Column(String(255))
     back_text = Column(String(255))
+
+    @property
+    def frontText(self):
+        return self.front_text
+
+    @property
+    def backText(self):
+        return self.back_text
 
 
 engine = create_engine("sqlite:////tmp/index.db")

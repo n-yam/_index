@@ -1,13 +1,9 @@
-from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
+from marshmallow import fields
 
-from main.card import Card
+from main.camel_case_schema import CamelCaseSchema
 
 
-class CardSchema(SQLAlchemySchema):
-    class Meta:
-        model = Card
-        load_instance = True
-
-    card_id = auto_field()
-    front_text = auto_field()
-    back_text = auto_field()
+class CardSchema(CamelCaseSchema):
+    id = fields.Int()
+    front_text = fields.Str(required=True)
+    back_text = fields.Str(required=True)
