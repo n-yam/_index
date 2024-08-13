@@ -2,9 +2,10 @@ from flask import Blueprint, request
 
 from index.models.card import Card
 from index.models.card_schema import CardSchema
-from index.database import get_session
+from index.services.DeckService import DeckService
 
 deck_controller = Blueprint("deck_controller", __name__)
+deck_service = DeckService()
 
 
 @deck_controller.post("/api/cards")
@@ -13,20 +14,8 @@ def card_post():
     back_text = request.form["backText"]
 
     card = Card(front_text=front_text, back_text=back_text)
+    card_saved = deck_service.add(card)
 
-    session = get_session()
-
-    try:
-        session.add(card)
-        session.commit()
-        card_saved = session.query(Card).order_by(Card.id.desc()).first()
-    except Exception as e:
-        session.rollback()
-        raise e
-    finally:
-        session.close()
-
-    card_schema = CardSchema()
-    json = card_schema.dump(card_saved)
+    json = CardSchema().dump(card_saved)
 
     return json
