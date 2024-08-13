@@ -2,7 +2,7 @@ from flask import Blueprint, request
 
 from index.models.card import Card
 from index.models.card_schema import CardSchema
-from index.services.DeckService import DeckService
+from index.services.deck_service import DeckService
 
 deck_controller = Blueprint("deck_controller", __name__)
 deck_service = DeckService()
