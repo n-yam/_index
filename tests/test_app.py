@@ -1,7 +1,5 @@
-from index import wsgi
+from index.wsgi import app
 
-
-app = wsgi.get_app()
 client = app.test_client()
 
 
