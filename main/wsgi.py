@@ -1,28 +1,14 @@
 from flask import Flask, request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.schema import Column
-from sqlalchemy.types import Integer, String
+from main.card import Card
+
 from sqlalchemy.ext.declarative import declarative_base
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 
-
 app = Flask(__name__)
-
 engine = create_engine("sqlite:////tmp/index.db")
-
 Base = declarative_base()
-
-
-class Card(Base):
-    __tablename__ = "cards"
-    card_id = Column(Integer, primary_key=True, autoincrement=True)
-    front_text = Column(String(255))
-    back_text = Column(String(255))
-
-
-# Create tables
-Base.metadata.create_all(engine)
 
 
 class CardSchema(SQLAlchemySchema):
