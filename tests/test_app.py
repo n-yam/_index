@@ -46,6 +46,15 @@ def test_card_get():
     assert response_get.json["backText"] == back_text
 
 
+def test_card_get_404():
+    clean_up()
+    unknown_id = 99999
+    response_get = card_get(unknown_id)
+
+    assert response_get.status_code == 404
+    assert response_get.json is None
+
+
 def test_card_put():
     # Post
     front_text_before = "[POST] THIS IS FRONT TEXT"
@@ -72,6 +81,23 @@ def test_card_put():
     assert response_put.json["backText"] == back_text_after
 
 
+def test_card_put_404():
+    unknown_id = 99999
+    url = "/api/cards/{}".format(unknown_id)
+
+    front_text = "[PUT] THIS IS FRONT TEXT"
+    back_text = "[PUT] THIS IS BACK TEXT"
+    formData = {
+        "frontText": front_text,
+        "backText": back_text,
+    }
+
+    response = client.put(url, data=formData)
+
+    assert response.status_code == 404
+    assert response.json == ""
+
+
 def test_card_delete():
     # Post
     response_post = card_post("FRONT_TEXT", "BACK_TEXT")
@@ -86,6 +112,16 @@ def test_card_delete():
     # Get
     response_get = card_get(id)
     assert response_get.status_code == 404
+
+
+def test_card_delete404():
+    clean_up()
+
+    unknown_id = 99999
+    response = card_delete(unknown_id)
+
+    assert response.status_code == 404
+    assert response.json is None
 
 
 def card_post(front_text, back_text):
@@ -115,3 +151,10 @@ def card_delete(id):
     url = "/api/cards/{}".format(id)
     response = client.delete(url)
     return response
+
+
+def clean_up():
+    response = card_get_all()
+
+    for card in response.json:
+        card_delete(card["id"])
