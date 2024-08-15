@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from index.models.card import Card
 from index.database import get_session
 from index import config
@@ -6,6 +8,8 @@ from index import config
 class CardService:
     def add(self, card):
         try:
+            card.created = datetime.now()
+
             with get_session() as session:
                 session.add(card)
                 session.commit()
@@ -22,8 +26,10 @@ class CardService:
                 if card:
                     card.front_text = newCard.front_text
                     card.back_text = newCard.back_text
+                    card.updated = datetime.now()
                     session.commit()
-                    return newCard
+                    card_updated = session.query(Card).filter_by(id=newCard.id).first()
+                    return card_updated
                 else:
                     return None
 

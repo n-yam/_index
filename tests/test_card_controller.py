@@ -1,6 +1,8 @@
 from pytest import fixture
+from datetime import datetime
 
 from index.wsgi import app
+from index.config import DATETIME_FORMAT
 
 client = app.test_client()
 
@@ -21,6 +23,8 @@ def test_card_post(auto_clean_up):
     assert response.status_code == 200
     assert response.json["frontText"] == front_text
     assert response.json["backText"] == back_text
+    assert response.json["created"] == datetime.now().strftime(DATETIME_FORMAT)
+    assert response.json["updated"] is None
 
 
 def test_card_get_all(auto_clean_up):
@@ -36,6 +40,8 @@ def test_card_get_all(auto_clean_up):
     assert response_get.status_code == 200
     assert response_get.json[0]["frontText"] == front_text
     assert response_get.json[0]["backText"] == back_text
+    assert response_get.json[0]["created"] == datetime.now().strftime(DATETIME_FORMAT)
+    assert response_get.json[0]["updated"] is None
 
 
 def test_card_get(auto_clean_up):
@@ -53,6 +59,8 @@ def test_card_get(auto_clean_up):
     assert response_get.status_code == 200
     assert response_get.json["frontText"] == front_text
     assert response_get.json["backText"] == back_text
+    assert response_get.json["created"] == datetime.now().strftime(DATETIME_FORMAT)
+    assert response_get.json["updated"] is None
 
 
 def test_card_get_404(auto_clean_up):
@@ -87,17 +95,16 @@ def test_card_put(auto_clean_up):
     assert response_put.status_code == 200
     assert response_put.json["frontText"] == front_text_after
     assert response_put.json["backText"] == back_text_after
+    assert response_put.json["created"] == datetime.now().strftime(DATETIME_FORMAT)
+    assert response_put.json["updated"] == datetime.now().strftime(DATETIME_FORMAT)
 
 
 def test_card_put_404(auto_clean_up):
     unknown_id = 99999
     url = "/api/cards/{}".format(unknown_id)
-
-    front_text = "[PUT] THIS IS FRONT TEXT"
-    back_text = "[PUT] THIS IS BACK TEXT"
     formData = {
-        "frontText": front_text,
-        "backText": back_text,
+        "frontText": "",
+        "backText": "",
     }
 
     response = client.put(url, data=formData)
