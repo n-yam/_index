@@ -32,8 +32,11 @@ def card_get_all():
 
 @card_controller.get("/api/cards/<id>")
 def card_get(id):
-
     card = card_service.get(id)
+
+    if card is None:
+        return "", 404
+
     json = CardSchema().dump(card)
 
     return json
@@ -49,3 +52,12 @@ def card_put(id):
     json = CardSchema().dump(card_saved)
 
     return json
+
+
+@card_controller.delete("/api/cards/<id>")
+def card_delete(id):
+
+    if card_service.remove(id) == 0:
+        return "", 404
+    else:
+        return "", 200

@@ -18,39 +18,42 @@ def test_card_get_all():
     # Post
     front_text = "[GET_ALL] THIS IS FRONT TEXT"
     back_text = "[GET_ALL] THIS IS BACK TEXT"
-    card_post(front_text, back_text)
+    response_post = card_post(front_text, back_text)
+    assert response_post.status_code == 200
 
     # Get all
-    url = "/api/cards"
-    response = client.get(url)
+    response_get = card_get_all()
 
-    assert response.status_code == 200
-    assert response.json[0]["frontText"] == front_text
-    assert response.json[0]["backText"] == back_text
+    assert response_get.status_code == 200
+    assert response_get.json[0]["frontText"] == front_text
+    assert response_get.json[0]["backText"] == back_text
 
 
 def test_card_get():
     # Post
     front_text = "[GET] THIS IS FRONT TEXT"
     back_text = "[GET] THIS IS BACK TEXT"
-    response = card_post(front_text, back_text)
-    id = response.json["id"]
+    response_post = card_post(front_text, back_text)
+    assert response_post.status_code == 200
+
+    id = response_post.json["id"]
 
     # Get
-    url = "/api/cards/{}".format(id)
-    response = client.get(url)
+    response_get = card_get(id)
 
-    assert response.status_code == 200
-    assert response.json["frontText"] == front_text
-    assert response.json["backText"] == back_text
+    assert response_get.status_code == 200
+    assert response_get.json["frontText"] == front_text
+    assert response_get.json["backText"] == back_text
 
 
 def test_card_put():
     # Post
     front_text_before = "[POST] THIS IS FRONT TEXT"
     back_text_before = "[POST] THIS IS BACK TEXT"
-    response = card_post(front_text_before, back_text_before)
-    id = response.json["id"]
+    response_post = card_post(front_text_before, back_text_before)
+    assert response_post.status_code == 200
+
+    id = response_post.json["id"]
 
     # Put
     url = "/api/cards/{}".format(id)
@@ -62,11 +65,27 @@ def test_card_put():
         "backText": back_text_after,
     }
 
-    response = client.put(url, data=formData)
+    response_put = client.put(url, data=formData)
 
-    assert response.status_code == 200
-    assert response.json["frontText"] == front_text_after
-    assert response.json["backText"] == back_text_after
+    assert response_put.status_code == 200
+    assert response_put.json["frontText"] == front_text_after
+    assert response_put.json["backText"] == back_text_after
+
+
+def test_card_delete():
+    # Post
+    response_post = card_post("FRONT_TEXT", "BACK_TEXT")
+    assert response_post.status_code == 200
+
+    id = response_post.json["id"]
+
+    # Delete
+    response_delete = card_delete(id)
+    assert response_delete.status_code == 200
+
+    # Get
+    response_get = card_get(id)
+    assert response_get.status_code == 404
 
 
 def card_post(front_text, back_text):
@@ -75,7 +94,24 @@ def card_post(front_text, back_text):
         "frontText": front_text,
         "backText": back_text,
     }
-
     response = client.post(url, data=formData)
 
+    return response
+
+
+def card_get(id):
+    url = "/api/cards/{}".format(id)
+    response = client.get(url)
+    return response
+
+
+def card_get_all():
+    url = "/api/cards"
+    response = client.get(url)
+    return response
+
+
+def card_delete(id):
+    url = "/api/cards/{}".format(id)
+    response = client.delete(url)
     return response

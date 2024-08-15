@@ -52,3 +52,19 @@ class CardService:
             session.close()
 
         return card
+
+    def remove(self, id):
+        session = get_session()
+
+        try:
+            deleted_rows_count = session.query(Card).filter(Card.id == id).delete()
+            session.commit()
+
+        except Exception as e:
+            session.rollback()
+            raise e
+
+        finally:
+            session.close()
+
+        return deleted_rows_count
