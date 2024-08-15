@@ -18,8 +18,8 @@ def test_count_empty(auto_clean_up):
     response = client.get(url)
 
     assert response.status_code == 200
-    assert response.json["total"] == 0
     assert response.json["fresh"] == 0
+    assert response.json["todo"] == 0
     assert response.json["done"] == 0
 
 
@@ -31,6 +31,6 @@ def test_count_present(auto_clean_up):
     response = client.get(url)
 
     assert response.status_code == 200
-    assert response.json["total"] == 1
     assert response.json["fresh"] == 1
+    assert response.json["todo"] == 0
     assert response.json["done"] == 0
