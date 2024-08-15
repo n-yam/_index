@@ -4,13 +4,13 @@ from index import config
 
 
 class CardService:
-    def save(self, card):
+    def add(self, card):
         session = get_session()
 
         try:
-            card_merged = session.merge(card)
+            session.add(card)
             session.commit()
-            card_saved = session.query(Card).filter_by(id=card_merged.id).first()
+            card_saved = session.query(Card).order_by(Card.id.desc()).first()
 
         except Exception as e:
             session.rollback()
@@ -20,6 +20,27 @@ class CardService:
             session.close()
 
         return card_saved
+
+    def update(self, newCard):
+        session = get_session()
+
+        try:
+            card = session.query(Card).filter_by(id=newCard.id).first()
+            if card:
+                card.front_text = newCard.front_text
+                card.back_text = newCard.back_text
+                session.commit()
+            else:
+                return None
+
+        except Exception as e:
+            session.rollback()
+            raise e
+
+        finally:
+            session.close()
+
+        return newCard
 
     def get_all(self):
         session = get_session()

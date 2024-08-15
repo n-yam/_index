@@ -14,7 +14,7 @@ def card_post():
     back_text = request.form["backText"]
 
     card = Card(front_text=front_text, back_text=back_text)
-    card_saved = card_service.save(card)
+    card_saved = card_service.add(card)
 
     json = CardSchema().dump(card_saved)
 
@@ -48,10 +48,14 @@ def card_put(id):
     back_text = request.form["backText"]
 
     card = Card(id=id, front_text=front_text, back_text=back_text)
-    card_saved = card_service.save(card)
-    json = CardSchema().dump(card_saved)
+    card_updated = card_service.update(card)
 
-    return json
+    if card_updated:
+        json = CardSchema().dump(card_updated)
+        return json
+
+    else:
+        return "", 404
 
 
 @card_controller.delete("/api/cards/<id>")

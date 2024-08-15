@@ -56,6 +56,8 @@ def test_card_get_404():
 
 
 def test_card_put():
+    clean_up()
+
     # Post
     front_text_before = "[POST] THIS IS FRONT TEXT"
     back_text_before = "[POST] THIS IS BACK TEXT"
@@ -82,6 +84,8 @@ def test_card_put():
 
 
 def test_card_put_404():
+    clean_up()
+
     unknown_id = 99999
     url = "/api/cards/{}".format(unknown_id)
 
@@ -95,7 +99,7 @@ def test_card_put_404():
     response = client.put(url, data=formData)
 
     assert response.status_code == 404
-    assert response.json == ""
+    assert response.json is None
 
 
 def test_card_delete():
