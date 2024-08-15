@@ -8,12 +8,12 @@ class QuestionService:
             with get_session() as session:
                 total_count = session.query(Card).count()
                 fresh_count = session.query(Card).filter(Card.fresh, True).count()
-                finished_count = session.query(Card).filter(Card.finished, True).count()
+                done_count = session.query(Card).filter(Card.done, True).count()
 
                 count = {
                     "total": total_count,
                     "fresh": fresh_count,
-                    "finished": finished_count,
+                    "done": done_count,
                 }
                 return count
 

@@ -10,7 +10,8 @@ class CardService:
         try:
             card.level = 0
             card.fresh = True
-            card.finished = False
+            card.todo = False
+            card.done = False
             card.next = datetime.strptime(CARD_NEXT_DEFAULT, DATETIME_FORMAT)
             card.created = datetime.now()
 
