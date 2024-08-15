@@ -9,13 +9,13 @@ client = app.test_client()
 
 
 @fixture
-def auto_clean_up():
-    clean_up()
+def auto_cleanup():
+    cleanup()
     yield
-    clean_up()
+    cleanup()
 
 
-def test_card_post(auto_clean_up):
+def test_card_post(auto_cleanup):
     front_text = "[POST] THIS IS FRONT TEXT"
     back_text = "[POST] THIS IS BACK TEXT"
 
@@ -33,7 +33,7 @@ def test_card_post(auto_clean_up):
     assert response.json["updated"] is None
 
 
-def test_card_get_all(auto_clean_up):
+def test_card_get_all(auto_cleanup):
     # Post
     front_text = "[GET_ALL] THIS IS FRONT TEXT"
     back_text = "[GET_ALL] THIS IS BACK TEXT"
@@ -55,7 +55,7 @@ def test_card_get_all(auto_clean_up):
     assert response_get.json[0]["updated"] is None
 
 
-def test_card_get(auto_clean_up):
+def test_card_get(auto_cleanup):
     # Post
     front_text = "[GET] THIS IS FRONT TEXT"
     back_text = "[GET] THIS IS BACK TEXT"
@@ -79,7 +79,7 @@ def test_card_get(auto_clean_up):
     assert response_get.json["updated"] is None
 
 
-def test_card_get_404(auto_clean_up):
+def test_card_get_404(auto_cleanup):
     unknown_id = 99999
     response_get = utils.card_get(unknown_id)
 
@@ -87,7 +87,7 @@ def test_card_get_404(auto_clean_up):
     assert response_get.json is None
 
 
-def test_card_put(auto_clean_up):
+def test_card_put(auto_cleanup):
     # Post
     front_text_before = "[POST] THIS IS FRONT TEXT"
     back_text_before = "[POST] THIS IS BACK TEXT"
@@ -120,7 +120,7 @@ def test_card_put(auto_clean_up):
     assert response_put.json["updated"] == datetime.now().strftime(DATETIME_FORMAT)
 
 
-def test_card_put_404(auto_clean_up):
+def test_card_put_404(auto_cleanup):
     unknown_id = 99999
     url = "/api/cards/{}".format(unknown_id)
     formData = {
@@ -134,7 +134,7 @@ def test_card_put_404(auto_clean_up):
     assert response.json is None
 
 
-def test_card_delete(auto_clean_up):
+def test_card_delete(auto_cleanup):
     # Post
     response_post = utils.card_post("FRONT_TEXT", "BACK_TEXT")
     assert response_post.status_code == 200
@@ -150,7 +150,7 @@ def test_card_delete(auto_clean_up):
     assert response_get.status_code == 404
 
 
-def test_card_delete404(auto_clean_up):
+def test_card_delete404(auto_cleanup):
     unknown_id = 99999
     response = utils.card_delete(unknown_id)
 
@@ -158,7 +158,7 @@ def test_card_delete404(auto_clean_up):
     assert response.json is None
 
 
-def clean_up():
+def cleanup():
     all_cards = utils.card_get_all().json
 
     for card in all_cards:

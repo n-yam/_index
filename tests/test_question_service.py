@@ -10,13 +10,13 @@ question_service = QuestionService()
 
 
 @fixture
-def auto_clean_up():
-    clean_up()
+def auto_cleanup():
+    cleanup()
     yield
-    clean_up()
+    cleanup()
 
 
-def test_reset(auto_clean_up):
+def test_reset(auto_cleanup):
     # Add
     card_service.add(Card())
 
@@ -37,6 +37,6 @@ def test_reset(auto_clean_up):
     assert count_reset["done"] == 0
 
 
-def clean_up():
+def cleanup():
     for card in card_service.get_all():
         card_service.remove(card.id)

@@ -3,7 +3,7 @@ from index.wsgi import app
 client = app.test_client()
 
 
-def clean_up():
+def cleanup():
     all_cards = card_get_all().json
 
     for card in all_cards:

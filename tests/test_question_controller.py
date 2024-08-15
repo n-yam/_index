@@ -7,13 +7,13 @@ client = app.test_client()
 
 
 @fixture
-def auto_clean_up():
-    utils.clean_up()
+def auto_cleanup():
+    utils.cleanup()
     yield
-    utils.clean_up()
+    utils.cleanup()
 
 
-def test_count_empty(auto_clean_up):
+def test_count_empty(auto_cleanup):
     url = "/api/questions/count"
     response = client.get(url)
 
@@ -23,7 +23,7 @@ def test_count_empty(auto_clean_up):
     assert response.json["done"] == 0
 
 
-def test_count_present(auto_clean_up):
+def test_count_present(auto_cleanup):
     # Post
     utils.card_post("FRONT_TEXT", "BACK_TEXT")
 
