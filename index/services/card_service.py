@@ -2,12 +2,15 @@ from datetime import datetime
 
 from index.models.card import Card
 from index.database import get_session
-from index import config
+from index.config import CARD_MAX_LENGTH, CARD_NEXT_DEFAULT, DATETIME_FORMAT
 
 
 class CardService:
     def add(self, card):
         try:
+            card.level = 0
+            card.fresh = True
+            card.next = datetime.strptime(CARD_NEXT_DEFAULT, DATETIME_FORMAT)
             card.created = datetime.now()
 
             with get_session() as session:
@@ -40,10 +43,9 @@ class CardService:
         try:
             with get_session() as session:
                 cards = (
-                    session.query(Card)
-                    .order_by(Card.id.desc())
-                    .limit(config.CARD_MAX_LENGTH)
+                    session.query(Card).order_by(Card.id.desc()).limit(CARD_MAX_LENGTH)
                 )
+
                 return cards
 
         except Exception as e:

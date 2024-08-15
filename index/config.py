@@ -1,5 +1,6 @@
 DATABASE_URL = "sqlite:////tmp/index.db"
 
 CARD_MAX_LENGTH = 100
+CARD_NEXT_DEFAULT = "1970-01-01T00:00:00"
 
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
