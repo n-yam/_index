@@ -45,6 +45,30 @@ def test_card_get():
     assert response.json["backText"] == back_text
 
 
+def test_card_put():
+    # Post
+    front_text_before = "[POST] THIS IS FRONT TEXT"
+    back_text_before = "[POST] THIS IS BACK TEXT"
+    response = card_post(front_text_before, back_text_before)
+    id = response.json["id"]
+
+    # Put
+    url = "/api/cards/{}".format(id)
+    front_text_after = "[PUT] ## FRONT TEXT ##"
+    back_text_after = "[PUT] ## BACK TEXT ##"
+
+    formData = {
+        "frontText": front_text_after,
+        "backText": back_text_after,
+    }
+
+    response = client.put(url, data=formData)
+
+    assert response.status_code == 200
+    assert response.json["frontText"] == front_text_after
+    assert response.json["backText"] == back_text_after
+
+
 def card_post(front_text, back_text):
     url = "/api/cards"
     formData = {

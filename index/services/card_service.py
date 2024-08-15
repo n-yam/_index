@@ -4,13 +4,13 @@ from index import config
 
 
 class CardService:
-    def add(self, card):
+    def save(self, card):
         session = get_session()
 
         try:
-            session.add(card)
+            card_merged = session.merge(card)
             session.commit()
-            card_saved = session.query(Card).order_by(Card.id.desc()).first()
+            card_saved = session.query(Card).filter_by(id=card_merged.id).first()
 
         except Exception as e:
             session.rollback()
