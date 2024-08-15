@@ -25,6 +25,7 @@ def test_card_post(auto_clean_up):
     assert response.json["backText"] == back_text
     assert response.json["level"] == 0
     assert response.json["fresh"] is True
+    assert response.json["finished"] is False
     assert response.json["next"] == CARD_NEXT_DEFAULT
     assert response.json["created"] == datetime.now().strftime(DATETIME_FORMAT)
     assert response.json["updated"] is None
@@ -45,6 +46,7 @@ def test_card_get_all(auto_clean_up):
     assert response_get.json[0]["backText"] == back_text
     assert response_get.json[0]["level"] == 0
     assert response_get.json[0]["fresh"] is True
+    assert response_get.json[0]["finished"] is False
     assert response_get.json[0]["next"] == CARD_NEXT_DEFAULT
     assert response_get.json[0]["created"] == datetime.now().strftime(DATETIME_FORMAT)
     assert response_get.json[0]["updated"] is None
@@ -67,6 +69,7 @@ def test_card_get(auto_clean_up):
     assert response_get.json["backText"] == back_text
     assert response_get.json["level"] == 0
     assert response_get.json["fresh"] is True
+    assert response_get.json["finished"] is False
     assert response_get.json["next"] == CARD_NEXT_DEFAULT
     assert response_get.json["created"] == datetime.now().strftime(DATETIME_FORMAT)
     assert response_get.json["updated"] is None
@@ -106,6 +109,7 @@ def test_card_put(auto_clean_up):
     assert response_put.json["backText"] == back_text_after
     assert response_put.json["level"] == 0
     assert response_put.json["fresh"] is True
+    assert response_put.json["finished"] is False
     assert response_put.json["next"] == CARD_NEXT_DEFAULT
     assert response_put.json["created"] == datetime.now().strftime(DATETIME_FORMAT)
     assert response_put.json["updated"] == datetime.now().strftime(DATETIME_FORMAT)

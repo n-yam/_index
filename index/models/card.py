@@ -12,6 +12,7 @@ class Card(Base):
     back_text = Column(String(255))
     level = Column(Integer)
     fresh = Column(Boolean)
+    finished = Column(Boolean)
     next = Column(DateTime)
     created = Column(DateTime)
     updated = Column(DateTime)
