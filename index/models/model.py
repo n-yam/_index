@@ -47,7 +47,7 @@ class Card(Base):
     )
 
     def level_up(self):
-        if self.level < config.CARD_MAX_LEVEL:
+        if self.level < config.CARD_LEVEL_MAX:
             self.level += 1
 
         self.done = True
@@ -55,7 +55,7 @@ class Card(Base):
         self.updated = datetime.now()
 
     def level_down(self):
-        if config.CARD_MIN_LEVEL < self.level:
+        if config.CARD_LEVEL_MIN < self.level:
             self.level -= 1
             self.done = True
 

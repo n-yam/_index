@@ -2,7 +2,7 @@ from datetime import datetime
 
 from index.models.model import Card
 from index.database import get_session
-from index.config import CARD_MAX_LENGTH
+from index.config import CARD_LENGTH_MAX
 
 
 class CardService:
@@ -38,7 +38,7 @@ class CardService:
         try:
             with get_session() as session:
                 cards = (
-                    session.query(Card).order_by(Card.id.desc()).limit(CARD_MAX_LENGTH)
+                    session.query(Card).order_by(Card.id.desc()).limit(CARD_LENGTH_MAX)
                 )
 
                 return cards

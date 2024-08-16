@@ -32,13 +32,13 @@ def test_level_up_from_min():
 
 def test_level_up_from_max():
     card = Card()
-    card.level = config.CARD_MAX_LEVEL
+    card.level = config.CARD_LEVEL_MAX
     card.level_up()
 
     today = datetime.now().date()
     next = today + timedelta(days=config.CARD_LEVEL_NINE_INTERVAL)
 
-    assert card.level == config.CARD_MAX_LEVEL
+    assert card.level == config.CARD_LEVEL_MAX
     assert card.next == next
     assert card.updated.date() == today
     assert card.todo is False
@@ -52,7 +52,7 @@ def test_level_down_from_min():
 
     today = datetime.now().date()
 
-    assert card.level == config.CARD_MIN_LEVEL
+    assert card.level == config.CARD_LEVEL_MIN
     assert card.next == today
     assert card.updated.date() == today
     assert card.todo is False
@@ -62,13 +62,13 @@ def test_level_down_from_min():
 
 def test_level_down_from_max():
     card = Card()
-    card.level = config.CARD_MAX_LEVEL
+    card.level = config.CARD_LEVEL_MAX
     card.level_down()
 
     today = datetime.now().date()
     next = today + timedelta(days=config.CARD_LEVEL_EIGHT_INTERVAL)
 
-    assert card.level == config.CARD_MAX_LEVEL - 1
+    assert card.level == config.CARD_LEVEL_MAX - 1
     assert card.next == next
     assert card.updated.date() == today
     assert card.todo is False
