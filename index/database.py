@@ -1,5 +1,6 @@
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 
 from index import config
 from index.models.base import Base

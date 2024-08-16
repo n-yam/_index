@@ -38,12 +38,14 @@ class Card(Base):
         primaryjoin="and_(FrontImage.card_id == Card.id, FrontImage.side=='front')",
         back_populates="card",
         lazy="joined",
+        cascade="all, delete",
     )
     back_images = relationship(
         "BackImage",
         primaryjoin="and_(BackImage.card_id == Card.id, BackImage.side=='back')",
         back_populates="card",
         lazy="joined",
+        cascade="all, delete",
     )
 
     def level_up(self):

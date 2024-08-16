@@ -4,7 +4,7 @@ from flask import Blueprint, request
 from index import config
 from index.models.model import Card, FrontImage, BackImage
 from index.models.schema import CardSchema
-from index.services.card_service import CardService
+from index.services.card_service import CardService, CardNotFoundException
 
 card_controller = Blueprint("card_controller", __name__)
 card_service = CardService()
@@ -83,8 +83,9 @@ def card_put(id):
 
 @card_controller.delete("/api/cards/<id>")
 def card_delete(id):
-
-    if card_service.remove(id) == 0:
-        return "", 404
-    else:
+    try:
+        card_service.remove(id)
         return "", 200
+
+    except CardNotFoundException:
+        return "", 404

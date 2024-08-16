@@ -1,5 +1,6 @@
 from pytest import fixture
 from datetime import datetime
+from pathlib import Path
 
 from index.wsgi import application
 from index.config import DATETIME_FORMAT, CARD_NEXT_DEFAULT
@@ -10,9 +11,9 @@ client = application.test_client()
 
 @fixture
 def auto_cleanup():
-    cleanup()
+    utils.cleanup()
     yield
-    cleanup()
+    utils.cleanup()
 
 
 def test_card_post(auto_cleanup):
@@ -31,6 +32,47 @@ def test_card_post(auto_cleanup):
     assert response.json["next"] == CARD_NEXT_DEFAULT
     assert response.json["created"] == datetime.now().strftime(DATETIME_FORMAT)
     assert response.json["updated"] is None
+
+
+def test_card_post_with_images(auto_cleanup):
+    # Post
+    front_text = "[POST] THIS IS FRONT TEXT"
+    back_text = "[POST] THIS IS BACK TEXT"
+    front_images = [
+        Path("tests/data/dog.jpg").open("rb"),
+        Path("tests/data/cat.jpg").open("rb"),
+    ]
+    back_images = [Path("tests/data/bird.jpg").open("rb")]
+
+    response = utils.card_post_with_images(
+        front_text, back_text, front_images, back_images
+    )
+
+    assert response.status_code == 200
+    assert response.json["frontText"] == front_text
+    assert response.json["backText"] == back_text
+    assert len(response.json["frontImages"]) == 2
+    assert len(response.json["backImages"]) == 1
+    assert response.json["level"] == 0
+    assert response.json["fresh"] is True
+    assert response.json["todo"] is False
+    assert response.json["done"] is False
+    assert response.json["next"] == CARD_NEXT_DEFAULT
+    assert response.json["created"] == datetime.now().strftime(DATETIME_FORMAT)
+    assert response.json["updated"] is None
+
+    # Get Image
+    uuid_list = []
+
+    for image in response.json["frontImages"]:
+        uuid_list.append(image["uuid"])
+
+    for image in response.json["backImages"]:
+        uuid_list.append(image["uuid"])
+
+    for uuid in uuid_list:
+        response_image = client.get("/images/{}".format(uuid))
+        assert response_image.status_code == 200
 
 
 def test_card_get_all(auto_cleanup):
@@ -136,18 +178,40 @@ def test_card_put_404(auto_cleanup):
 
 def test_card_delete(auto_cleanup):
     # Post
-    response_post = utils.card_post("FRONT_TEXT", "BACK_TEXT")
+    front_text = "[POST] THIS IS FRONT TEXT"
+    back_text = "[POST] THIS IS BACK TEXT"
+    front_images = [
+        Path("tests/data/dog.jpg").open("rb"),
+        Path("tests/data/cat.jpg").open("rb"),
+    ]
+    back_images = [Path("tests/data/bird.jpg").open("rb")]
+
+    response_post = utils.card_post_with_images(
+        front_text, back_text, front_images, back_images
+    )
     assert response_post.status_code == 200
 
-    id = response_post.json["id"]
-
     # Delete
+    id = response_post.json["id"]
     response_delete = utils.card_delete(id)
     assert response_delete.status_code == 200
 
-    # Get
+    # Get Card
     response_get = utils.card_get(id)
     assert response_get.status_code == 404
+
+    # Get Image
+    uuid_list = []
+
+    for image in response_post.json["frontImages"]:
+        uuid_list.append(image["uuid"])
+
+    for image in response_post.json["backImages"]:
+        uuid_list.append(image["uuid"])
+
+    for uuid in uuid_list:
+        response_image = client.get("/images/{}".format(uuid))
+        assert response_image.status_code == 404
 
 
 def test_card_delete404(auto_cleanup):
@@ -156,10 +220,3 @@ def test_card_delete404(auto_cleanup):
 
     assert response.status_code == 404
     assert response.json is None
-
-
-def cleanup():
-    all_cards = utils.card_get_all().json
-
-    for card in all_cards:
-        utils.card_delete(card["id"])

@@ -21,6 +21,19 @@ def card_post(front_text, back_text):
     return response
 
 
+def card_post_with_images(front_text, back_text, front_images, back_images):
+    url = "/api/cards"
+    formData = {
+        "frontText": front_text,
+        "backText": back_text,
+        "frontImage": front_images,
+        "backImage": back_images,
+    }
+    response = client.post(url, data=formData)
+
+    return response
+
+
 def card_get(id):
     url = "/api/cards/{}".format(id)
     response = client.get(url)

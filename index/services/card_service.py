@@ -1,8 +1,9 @@
+import os
 from datetime import datetime
 
-from index.models.model import Card
+from index.models.model import Card, Image
 from index.database import get_session
-from index.config import CARD_LENGTH_MAX
+from index.config import CARD_LENGTH_MAX, IMAGE_DIR
 
 
 class CardService:
@@ -58,9 +59,33 @@ class CardService:
     def remove(self, id):
         try:
             with get_session() as session:
-                rows_count = session.query(Card).filter(Card.id == id).delete()
+                card = session.query(Card).filter(Card.id == id).first()
+                if card is None:
+                    raise CardNotFoundException
+                self.remove_image(card)
+
+            with get_session() as session:
+                session.query(Card).filter(Card.id == id).delete()
+                session.query(Image).filter(Image.card_id == id).delete()
                 session.commit()
-                return rows_count
 
         except Exception as e:
             raise e
+
+    def remove_image(self, card):
+        images = []
+
+        for front_image in card.front_images:
+            images.append(front_image)
+
+        for back_image in card.back_images:
+            images.append(back_image)
+
+        for image in images:
+            path = "{}/{}.jpg".format(IMAGE_DIR, image.uuid)
+            os.remove(path)
+
+
+class CardNotFoundException(Exception):
+    def __init__(self, arg=""):
+        self.arg = arg
