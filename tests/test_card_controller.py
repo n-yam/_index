@@ -174,13 +174,7 @@ def test_card_put(auto_cleanup):
 
 def test_card_put_404(auto_cleanup):
     unknown_id = 99999
-    url = "/api/cards/{}".format(unknown_id)
-    formData = {
-        "frontText": "",
-        "backText": "",
-    }
-
-    response = client.put(url, data=formData)
+    response = utils.card_put(unknown_id, "", "")
 
     assert response.status_code == 404
     assert response.json is None
