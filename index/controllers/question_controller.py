@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint
 
 from index.services.question_service import QuestionService
@@ -10,3 +12,10 @@ question_service = QuestionService()
 def question_count_get():
     count = question_service.count()
     return count
+
+
+@question_controller.post("/api/questions/reset")
+def question_count_reset():
+    now = datetime.now()
+    question_service.reset(now)
+    return ""

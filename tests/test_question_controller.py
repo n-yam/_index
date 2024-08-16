@@ -34,3 +34,20 @@ def test_count_present(auto_cleanup):
     assert response.json["fresh"] == 1
     assert response.json["todo"] == 0
     assert response.json["done"] == 0
+
+
+def test_reset(auto_cleanup):
+    # Post
+    utils.card_post("FRONT_TEXT", "BACK_TEXT")
+
+    # Reset
+    client.post("/api/questions/reset")
+
+    # Count
+    url = "/api/questions/count"
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert response.json["fresh"] == 1
+    assert response.json["todo"] == 1
+    assert response.json["done"] == 0
