@@ -23,6 +23,7 @@ class CardSchema(CamelCaseSchema):
     front_text = fields.Str(required=True)
     back_text = fields.Str(required=True)
     front_images = fields.Nested(ImageSchema, many=True)
+    back_images = fields.Nested(ImageSchema, many=True)
     level = fields.Integer()
     fresh = fields.Bool()
     todo = fields.Bool()

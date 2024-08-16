@@ -2,7 +2,7 @@ from uuid import uuid4
 from flask import Blueprint, request
 
 from index import config
-from index.models.model import Card, Image
+from index.models.model import Card, FrontImage, BackImage
 from index.models.schema import CardSchema
 from index.services.card_service import CardService
 
@@ -25,7 +25,17 @@ def card_post():
         file.save(path)
 
         # Link to card
-        Image(uuid=uuid, card=card)
+        FrontImage(uuid=uuid, card=card)
+
+    for file in request.files.getlist("backImage"):
+        uuid = uuid = str(uuid4())
+
+        # Write to file
+        path = "{}/{}.jpg".format(config.IMAGE_DIR, uuid)
+        file.save(path)
+
+        # Link to card
+        BackImage(uuid=uuid, card=card)
 
     card_saved = card_service.add(card)
 
