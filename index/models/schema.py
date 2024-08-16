@@ -13,10 +13,16 @@ class CamelCaseSchema(Schema):
         field_obj.data_key = self.camelcase(field_obj.data_key or field_name)
 
 
+class ImageSchema(CamelCaseSchema):
+    id = fields.Int()
+    uuid = fields.Str()
+
+
 class CardSchema(CamelCaseSchema):
     id = fields.Int()
     front_text = fields.Str(required=True)
     back_text = fields.Str(required=True)
+    front_images = fields.Nested(ImageSchema, many=True)
     level = fields.Integer()
     fresh = fields.Bool()
     todo = fields.Bool()
