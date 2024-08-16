@@ -1,5 +1,6 @@
 from pytest import fixture
 
+from index import config
 from index.wsgi import application
 from tests import utils
 
@@ -23,7 +24,7 @@ def test_count_empty(auto_cleanup):
     assert response.json["done"] == 0
 
 
-def test_count_present(auto_cleanup):
+def test_count_present_but_not_reset(auto_cleanup):
     # Post
     utils.card_post("FRONT_TEXT", "BACK_TEXT")
 
@@ -31,7 +32,7 @@ def test_count_present(auto_cleanup):
     response = client.get(url)
 
     assert response.status_code == 200
-    assert response.json["fresh"] == 1
+    assert response.json["fresh"] == 0
     assert response.json["todo"] == 0
     assert response.json["done"] == 0
 
@@ -50,6 +51,24 @@ def test_reset(auto_cleanup):
     assert response.status_code == 200
     assert response.json["fresh"] == 1
     assert response.json["todo"] == 1
+    assert response.json["done"] == 0
+
+
+def test_count_fresh(auto_cleanup):
+    # Post
+    for i in range(config.QUESTION_FRESH_MAX + 10):
+        utils.card_post("FRONT_TEXT", "BACK_TEXT")
+
+    # Reset
+    client.post("/api/questions/reset")
+
+    # Count
+    url = "/api/questions/count"
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert response.json["fresh"] == 10
+    assert response.json["todo"] == 10
     assert response.json["done"] == 0
 
 

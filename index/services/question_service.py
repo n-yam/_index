@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from index import config
 from index.models.model import Card
 from index.database import get_session
 
@@ -8,7 +9,11 @@ class QuestionService:
     def count(self):
         try:
             with get_session() as session:
-                fresh_count = session.query(Card).filter(Card.fresh, True).count()
+                fresh_count = (
+                    session.query(Card)
+                    .filter((Card.fresh.is_(True)) & (Card.todo.is_(True)))
+                    .count()
+                )
                 todo_count = session.query(Card).filter(Card.todo, True).count()
                 done_count = session.query(Card).filter(Card.done, True).count()
 
@@ -30,7 +35,17 @@ class QuestionService:
                     question.todo = False
 
                 # Setup
-                for question in session.query(Card).filter(Card.next <= now):
+                for question in (
+                    session.query(Card)
+                    .filter(Card.fresh.is_(True))
+                    .order_by(Card.created.asc())
+                    .limit(config.QUESTION_FRESH_MAX)
+                ):
+                    question.todo = True
+
+                for question in session.query(Card).filter(
+                    (Card.fresh.is_(False)) & (Card.next <= now)
+                ):
                     question.todo = True
 
                 session.commit()
