@@ -68,3 +68,83 @@ def test_first(auto_cleanup):
     assert response.status_code == 200
     assert response.json["frontText"] == front_text
     assert response.json["backText"] == back_text
+
+
+def test_answer_one(auto_cleanup):
+    # Post
+    utils.card_post("", "")
+
+    # Reset
+    client.post("/api/questions/reset")
+
+    # Answer
+    response_answer = client.post("/api/questions/first?answer=1")
+
+    assert response_answer.status_code == 200
+    assert response_answer.json["done"] is True
+
+    # Count
+    response_count = client.get("/api/questions/count")
+
+    assert response_count.json["fresh"] == 1
+    assert response_count.json["todo"] == 1
+    assert response_count.json["done"] == 1
+
+    # First
+    response_question = client.post("/api/questions/first")
+
+    assert response_question.status_code == 404
+
+
+def test_answer_zero(auto_cleanup):
+    # Post
+    utils.card_post("", "")
+
+    # Reset
+    client.post("/api/questions/reset")
+
+    # Answer
+    response_answer = client.post("/api/questions/first?answer=0")
+
+    assert response_answer.status_code == 200
+    assert response_answer.json["done"] is False
+
+    # Count
+    response_count = client.get("/api/questions/count")
+
+    assert response_count.json["fresh"] == 1
+    assert response_count.json["todo"] == 1
+    assert response_count.json["done"] == 0
+
+    # First
+    response_question = client.post("/api/questions/first")
+
+    assert response_question.status_code == 200
+
+
+def test_answer_rotate(auto_cleanup):
+    # Post
+    utils.card_post("", "")
+    utils.card_post("", "")
+    utils.card_post("", "")
+
+    # Reset
+    client.post("/api/questions/reset")
+
+    # Rotate
+    assert client.post("/api/questions/first").json["id"] == 1
+
+    client.post("/api/questions/first?answer=0")
+    assert client.post("/api/questions/first").json["id"] == 2
+
+    client.post("/api/questions/first?answer=0")
+    assert client.post("/api/questions/first").json["id"] == 3
+
+    client.post("/api/questions/first?answer=0")
+    assert client.post("/api/questions/first").json["id"] == 1
+
+    client.post("/api/questions/first?answer=0")
+    assert client.post("/api/questions/first").json["id"] == 2
+
+    client.post("/api/questions/first?answer=0")
+    assert client.post("/api/questions/first").json["id"] == 3
