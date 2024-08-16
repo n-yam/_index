@@ -2,7 +2,7 @@ from datetime import datetime
 
 from index.models.model import Card
 from index.database import get_session
-from index.config import CARD_MAX_LENGTH, CARD_NEXT_DEFAULT, DATETIME_FORMAT
+from index.config import CARD_MAX_LENGTH, CARD_NEXT_DEFAULT, DATE_FORMAT
 
 
 class CardService:
@@ -12,7 +12,7 @@ class CardService:
             card.fresh = True
             card.todo = False
             card.done = False
-            card.next = datetime.strptime(CARD_NEXT_DEFAULT, DATETIME_FORMAT)
+            card.next = datetime.strptime(CARD_NEXT_DEFAULT, DATE_FORMAT)
             card.created = datetime.now()
 
             with get_session() as session:

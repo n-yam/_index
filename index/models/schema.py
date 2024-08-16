@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields
 
-from index.config import DATETIME_FORMAT
+from index.config import DATE_FORMAT, DATETIME_FORMAT
 
 
 class CamelCaseSchema(Schema):
@@ -28,6 +28,6 @@ class CardSchema(CamelCaseSchema):
     fresh = fields.Bool()
     todo = fields.Bool()
     done = fields.Bool()
-    next = fields.DateTime(format=DATETIME_FORMAT)
+    next = fields.Date(format=DATE_FORMAT)
     created = fields.DateTime(format=DATETIME_FORMAT)
     updated = fields.DateTime(format=DATETIME_FORMAT)

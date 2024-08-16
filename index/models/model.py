@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from sqlalchemy.orm import relationship, mapped_column
 from sqlalchemy.schema import Column, ForeignKey
-from sqlalchemy.types import Integer, String, DateTime, Boolean
+from sqlalchemy.types import Integer, String, Date, DateTime, Boolean
 
 from index import config
 from index.models.base import Base
@@ -18,7 +18,7 @@ class Card(Base):
     fresh = Column(Boolean)
     todo = Column(Boolean)
     done = Column(Boolean)
-    next = Column(DateTime)
+    next = Column(Date)
     created = Column(DateTime)
     updated = Column(DateTime)
     front_images = relationship(
