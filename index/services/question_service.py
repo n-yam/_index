@@ -35,3 +35,18 @@ class QuestionService:
 
         except Exception as e:
             raise e
+
+    def first(self):
+        try:
+            with get_session() as session:
+                question = (
+                    session.query(Card)
+                    .filter(Card.todo.is_(True))
+                    .order_by(Card.updated.desc())
+                    .first()
+                )
+
+                return question
+
+        except Exception as e:
+            raise e

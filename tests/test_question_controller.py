@@ -51,3 +51,20 @@ def test_reset(auto_cleanup):
     assert response.json["fresh"] == 1
     assert response.json["todo"] == 1
     assert response.json["done"] == 0
+
+
+def test_first(auto_cleanup):
+    # Post
+    front_text = "FRONT_TEXT"
+    back_text = "BACK_TEXT"
+    utils.card_post(front_text, back_text)
+
+    # Reset
+    client.post("/api/questions/reset")
+
+    # First
+    response = client.get("/api/questions/first")
+
+    assert response.status_code == 200
+    assert response.json["frontText"] == front_text
+    assert response.json["backText"] == back_text
