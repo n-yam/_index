@@ -9,7 +9,17 @@ from index.models.base import Base
 
 
 class Card(Base):
+
     __tablename__ = "cards"
+
+    def __init__(self, *args, **kwargs):
+        super(Card, self).__init__(*args, **kwargs)
+        self.level = 0
+        self.fresh = True
+        self.todo = False
+        self.done = False
+        self.next = datetime.strptime(config.CARD_NEXT_DEFAULT, config.DATE_FORMAT)
+        self.created = datetime.now()
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     front_text = Column(String(255))
