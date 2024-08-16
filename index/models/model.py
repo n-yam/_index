@@ -18,7 +18,9 @@ class Card(Base):
         self.fresh = True
         self.todo = False
         self.done = False
-        self.next = datetime.strptime(config.CARD_NEXT_DEFAULT, config.DATE_FORMAT)
+        self.next = datetime.strptime(
+            config.CARD_NEXT_DEFAULT, config.DATE_FORMAT
+        ).date()
         self.created = datetime.now()
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -47,40 +49,40 @@ class Card(Base):
     def level_up(self):
         if self.level < config.CARD_MAX_LEVEL:
             self.level += 1
-            self.next = datetime.now() + self.calc_interval()
-            self.done = True
 
+        self.done = True
+        self.next = datetime.now().date() + self.calc_interval()
         self.updated = datetime.now()
 
     def level_down(self):
         if config.CARD_MIN_LEVEL < self.level:
             self.level -= 1
-            self.next = datetime.now() + self.calc_interval()
             self.done = True
 
+        self.next = datetime.now().date() + self.calc_interval()
         self.updated = datetime.now()
 
     def calc_interval(self):
         if self.level == 0:
-            return timedelta(days=0)
+            return timedelta(days=config.CARD_LEVEL_ZERO_INTERVAL)
         if self.level == 1:
-            return timedelta(days=1)
+            return timedelta(days=config.CARD_LEVEL_ONE_INTERVAL)
         if self.level == 2:
-            return timedelta(days=3)
+            return timedelta(days=config.CARD_LEVEL_TWO_INTERVAL)
         if self.level == 3:
-            return timedelta(days=5)
+            return timedelta(days=config.CARD_LEVEL_THREE_INTERVAL)
         if self.level == 4:
-            return timedelta(days=7)
+            return timedelta(days=config.CARD_LEVEL_FOUR_INTERVAL)
         if self.level == 5:
-            return timedelta(days=15)
+            return timedelta(days=config.CARD_LEVEL_FIVE_INTERVAL)
         if self.level == 6:
-            return timedelta(days=30)
+            return timedelta(days=config.CARD_LEVEL_SIX_INTERVAL)
         if self.level == 7:
-            return timedelta(days=60)
+            return timedelta(days=config.CARD_LEVEL_SEVEN_INTERVAL)
         if self.level == 8:
-            return timedelta(days=90)
+            return timedelta(days=config.CARD_LEVEL_EIGHT_INTERVAL)
         if self.level == 9:
-            return timedelta(days=120)
+            return timedelta(days=config.CARD_LEVEL_NINE_INTERVAL)
 
 
 class Image(Base):
