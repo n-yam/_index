@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from index.models.model import Card
 from index.database import get_session
 
@@ -41,12 +43,31 @@ class QuestionService:
             with get_session() as session:
                 question = (
                     session.query(Card)
-                    .filter(Card.todo.is_(True))
-                    .order_by(Card.updated.desc())
+                    .filter((Card.todo.is_(True)) & (Card.next < datetime.now()))
+                    .order_by(Card.updated.asc())
                     .first()
                 )
 
                 return question
+
+        except Exception as e:
+            raise e
+
+    def answer(self, answer):
+        try:
+            card = self.first()
+
+            if answer == "0":
+                card.level_down()
+
+            elif answer == "1":
+                card.level_up()
+
+            with get_session() as session:
+                session.add(card)
+                session.commit()
+                card_updated = session.query(Card).filter_by(id=card.id).first()
+                return card_updated
 
         except Exception as e:
             raise e

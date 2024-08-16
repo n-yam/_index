@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Blueprint
+from flask import Blueprint, request
 
 from index.models.schema import CardSchema
 from index.services.question_service import QuestionService
@@ -30,3 +30,16 @@ def question_first_get():
         return "", 404
 
     return CardSchema().dump(question)
+
+
+@question_controller.post("/api/questions/first")
+def question_answer_post():
+    card = question_service.first()
+
+    if card is None:
+        return "", 404
+
+    answer = request.args.get("answer")
+    card_updated = question_service.answer(answer)
+
+    return CardSchema().dump(card_updated)

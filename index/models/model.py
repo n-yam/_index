@@ -1,7 +1,10 @@
+from datetime import datetime, timedelta
+
 from sqlalchemy.orm import relationship, mapped_column
 from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Integer, String, DateTime, Boolean
 
+from index import config
 from index.models.base import Base
 
 
@@ -30,6 +33,44 @@ class Card(Base):
         back_populates="card",
         lazy="joined",
     )
+
+    def level_up(self):
+        if self.level < config.CARD_MAX_LEVEL:
+            self.level += 1
+            self.next = datetime.now() + self.calc_interval()
+            self.done = True
+
+        self.updated = datetime.now()
+
+    def level_down(self):
+        if config.CARD_MIN_LEVEL < self.level:
+            self.level -= 1
+            self.next = datetime.now() + self.calc_interval()
+            self.done = True
+
+        self.updated = datetime.now()
+
+    def calc_interval(self):
+        if self.level == 0:
+            return timedelta(days=0)
+        if self.level == 1:
+            return timedelta(days=1)
+        if self.level == 2:
+            return timedelta(days=3)
+        if self.level == 3:
+            return timedelta(days=5)
+        if self.level == 4:
+            return timedelta(days=7)
+        if self.level == 5:
+            return timedelta(days=15)
+        if self.level == 6:
+            return timedelta(days=30)
+        if self.level == 7:
+            return timedelta(days=60)
+        if self.level == 8:
+            return timedelta(days=90)
+        if self.level == 9:
+            return timedelta(days=120)
 
 
 class Image(Base):
