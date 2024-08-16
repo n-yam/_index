@@ -1,7 +1,7 @@
 from pytest import fixture
 from datetime import datetime
 
-from index.models.card import Card
+from index.models.model import Card
 from index.services.card_service import CardService
 from index.services.question_service import QuestionService
 

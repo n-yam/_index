@@ -1,9 +1,9 @@
 from pytest import fixture
 
-from index.wsgi import app
+from index.wsgi import application
 from tests import utils
 
-client = app.test_client()
+client = application.test_client()
 
 
 @fixture

@@ -1,7 +1,16 @@
-from marshmallow import fields
+from marshmallow import Schema, fields
 
 from index.config import DATETIME_FORMAT
-from index.models.camel_case_schema import CamelCaseSchema
+
+
+class CamelCaseSchema(Schema):
+    # https://marshmallow.readthedocs.io/en/latest/examples.html#inflection-camel-casing-keys
+    def camelcase(self, s):
+        parts = iter(s.split("_"))
+        return next(parts) + "".join(i.title() for i in parts)
+
+    def on_bind_field(self, field_name, field_obj):
+        field_obj.data_key = self.camelcase(field_obj.data_key or field_name)
 
 
 class CardSchema(CamelCaseSchema):

@@ -1,4 +1,4 @@
-from index.models.card import Card
+from index.models.model import Card
 from index.database import get_session
 
 

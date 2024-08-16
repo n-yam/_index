@@ -1,11 +1,11 @@
 from pytest import fixture
 from datetime import datetime
 
-from index.wsgi import app
+from index.wsgi import application
 from index.config import DATETIME_FORMAT, CARD_NEXT_DEFAULT
 from tests import utils
 
-client = app.test_client()
+client = application.test_client()
 
 
 @fixture

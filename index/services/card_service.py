@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from index.models.card import Card
+from index.models.model import Card
 from index.database import get_session
 from index.config import CARD_MAX_LENGTH, CARD_NEXT_DEFAULT, DATETIME_FORMAT
 
