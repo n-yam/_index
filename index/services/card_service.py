@@ -1,4 +1,5 @@
 import os
+from sqlalchemy import func
 from datetime import datetime
 
 from index.models.model import Card, Image
@@ -51,6 +52,15 @@ class CardService:
         try:
             with get_session() as session:
                 card = session.get(Card, id)
+                return card
+
+        except Exception as e:
+            raise e
+
+    def get_random(self):
+        try:
+            with get_session() as session:
+                card = session.query(Card).order_by(func.random()).first()
                 return card
 
         except Exception as e:

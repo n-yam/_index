@@ -121,6 +121,23 @@ def test_card_get(auto_cleanup):
     assert response_get.json["updated"] is None
 
 
+def test_card_get_random(auto_cleanup):
+    # Post
+    for i in range(10):
+        front_text = "[GET] THIS IS FRONT TEXT"
+        back_text = "[GET] THIS IS BACK TEXT"
+        utils.card_post(front_text, back_text)
+
+    id_list = []
+
+    # Get
+    for j in range(10):
+        id = client.get("/api/cards/random").json["id"]
+        id_list.append(id)
+
+    assert len(set(id_list)) > 1
+
+
 def test_card_get_404(auto_cleanup):
     unknown_id = 99999
     response_get = utils.card_get(unknown_id)

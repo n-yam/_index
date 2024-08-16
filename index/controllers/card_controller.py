@@ -65,6 +65,18 @@ def card_get(id):
     return json
 
 
+@card_controller.get("/api/cards/random")
+def card_get_random():
+    card = card_service.get_random()
+
+    if card is None:
+        return "", 404
+
+    json = CardSchema().dump(card)
+
+    return json
+
+
 @card_controller.put("/api/cards/<id>")
 def card_put(id):
     front_text = request.form["frontText"]
