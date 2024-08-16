@@ -50,3 +50,14 @@ def card_delete(id):
     url = "/api/cards/{}".format(id)
     response = client.delete(url)
     return response
+
+
+def card_put(id, front_text, back_text):
+    url = "/api/cards/{}".format(id)
+    formData = {
+        "frontText": front_text,
+        "backText": back_text,
+    }
+    response = client.put(url, data=formData)
+
+    return response

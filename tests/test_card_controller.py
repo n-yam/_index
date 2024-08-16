@@ -156,16 +156,9 @@ def test_card_put(auto_cleanup):
     id = response_post.json["id"]
 
     # Put
-    url = "/api/cards/{}".format(id)
     front_text_after = "[PUT] ## FRONT TEXT ##"
     back_text_after = "[PUT] ## BACK TEXT ##"
-
-    formData = {
-        "frontText": front_text_after,
-        "backText": back_text_after,
-    }
-
-    response_put = client.put(url, data=formData)
+    response_put = utils.card_put(id, front_text_after, back_text_after)
 
     assert response_put.status_code == 200
     assert response_put.json["frontText"] == front_text_after
