@@ -10,66 +10,91 @@ card_service = CardService()
 
 @card_controller.post("/api/cards")
 def card_post():
-    front_text = request.form["frontText"]
-    back_text = request.form["backText"]
+    try:
+        front_text = request.form["frontText"]
+        back_text = request.form["backText"]
 
-    card = Card(front_text=front_text, back_text=back_text)
-    files = request.files
+        card = Card(front_text=front_text, back_text=back_text)
+        files = request.files
 
-    card_saved = card_service.add(card, files)
+        card_saved = card_service.add(card, files)
 
-    json = CardSchema().dump(card_saved)
+        json = CardSchema().dump(card_saved)
 
-    return json
+        return json
+
+    except Exception as e:
+        print(e)
+        return "", 500
 
 
 @card_controller.get("/api/cards")
 def card_get_all():
+    try:
+        cards = card_service.get_all()
+        json = CardSchema(many=True).dump(cards)
 
-    cards = card_service.get_all()
-    json = CardSchema(many=True).dump(cards)
+        return json
 
-    return json
+    except Exception as e:
+        print(e)
+        return "", 500
 
 
 @card_controller.get("/api/cards/<id>")
 def card_get(id):
-    card = card_service.get(id)
+    try:
+        card = card_service.get(id)
 
-    if card is None:
+        json = CardSchema().dump(card)
+
+        return json
+
+    except CardNotFoundException:
         return "", 404
 
-    json = CardSchema().dump(card)
-
-    return json
+    except Exception as e:
+        print(e)
+        return "", 500
 
 
 @card_controller.get("/api/cards/random")
 def card_get_random():
-    card = card_service.get_random()
+    try:
+        card = card_service.get_random()
 
-    if card is None:
+        if card is None:
+            return "", 404
+
+        json = CardSchema().dump(card)
+
+        return json
+
+    except CardNotFoundException:
         return "", 404
 
-    json = CardSchema().dump(card)
-
-    return json
+    except Exception as e:
+        print(e)
+        return "", 500
 
 
 @card_controller.put("/api/cards/<id>")
 def card_put(id):
-    front_text = request.form["frontText"]
-    back_text = request.form["backText"]
+    try:
+        front_text = request.form["frontText"]
+        back_text = request.form["backText"]
 
-    card = Card(id=id, front_text=front_text, back_text=back_text)
-    card_updated = card_service.update(card)
+        card = Card(id=id, front_text=front_text, back_text=back_text)
+        card_updated = card_service.update(card)
 
-    if card_updated:
-        json = CardSchema().dump(card_updated)
-        return json
+        return CardSchema().dump(card_updated)
 
-    else:
+    except CardNotFoundException:
         return "", 404
+
+    except Exception as e:
+        print(e)
+        return "", 500
 
 
 @card_controller.delete("/api/cards/<id>")
@@ -80,3 +105,7 @@ def card_delete(id):
 
     except CardNotFoundException:
         return "", 404
+
+    except Exception as e:
+        print(e)
+        return "", 500

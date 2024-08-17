@@ -4,7 +4,7 @@ from sqlalchemy import func
 from datetime import datetime
 
 from index import config
-from index.models.model import Card, Image, FrontImage, BackImage
+from index.models.model import Card, FrontImage, BackImage
 from index.database import get_session
 from index.config import CARD_LENGTH_MAX, IMAGE_DIR
 
@@ -40,15 +40,18 @@ class CardService:
         try:
             with get_session() as session:
                 card = session.query(Card).filter_by(id=newCard.id).first()
-                if card:
-                    card.front_text = newCard.front_text
-                    card.back_text = newCard.back_text
-                    card.updated = datetime.now()
-                    session.commit()
-                    card_updated = session.query(Card).filter_by(id=newCard.id).first()
-                    return card_updated
-                else:
-                    return None
+
+                if card is None:
+                    raise CardNotFoundException
+
+                card.front_text = newCard.front_text
+                card.back_text = newCard.back_text
+                card.updated = datetime.now()
+                session.commit()
+
+                card_updated = session.query(Card).filter_by(id=newCard.id).first()
+
+                return card_updated
 
         except Exception as e:
             raise e
@@ -69,6 +72,10 @@ class CardService:
         try:
             with get_session() as session:
                 card = session.get(Card, id)
+
+                if card is None:
+                    raise CardNotFoundException
+
                 return card
 
         except Exception as e:
@@ -78,6 +85,10 @@ class CardService:
         try:
             with get_session() as session:
                 card = session.query(Card).order_by(func.random()).first()
+
+                if card is None:
+                    raise CardNotFoundException
+
                 return card
 
         except Exception as e:
