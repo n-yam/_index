@@ -17,13 +17,6 @@ document.body.innerHTML = `
     <div id="app"></div>
 `
 
-document.querySelectorAll("a").forEach(a => {
-    a.onclick = event => {
-        event.preventDefault();
-        window.history.pushState(null, "", a.href);
-    };
-});
-
 const updateView = () => {
     const pages = {
         "/": new TopPage(),
@@ -40,14 +33,6 @@ const updateView = () => {
 
     previousPage ? app.replaceChild(page, previousPage) : app.appendChild(page);
 };
-
-document.querySelectorAll("a").forEach(a => {
-    a.onclick = event => {
-        event.preventDefault();
-        window.history.pushState(null, "", a.href);
-        updateView();
-    };
-});
 
 // 初期表示時の処理
 updateView();
