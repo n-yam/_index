@@ -5,14 +5,15 @@ import CardUpdatePage from "./pages/CardUpdatePage";
 import CardDetailPage from "./pages/CardDetailPage";
 import QuestionPage from "./pages/QuestionPage";
 import NotFoundPage from "./pages/NotFoundPage"
+import SpaAnchor from "./components/SpaAnchor";
 
 document.body.innerHTML = `
-    <a href="/">TOP</a>
-    <a href="/cards/add">CARD_ADD</a>
-    <a href="/cards/list">CARD_LIST</a>
-    <a href="/cards/update">CARD_UPDATE</a> 
-    <a href="/cards/detail">CARD_DETAIL</a>
-    <a href="/question">QUESTION</a>
+    <spa-anchor href="/">TOP</spa-anchor> |
+    <spa-anchor href="/cards/add">CARD_ADD</spa-anchor> |
+    <spa-anchor href="/cards/list">CARD_LIST</spa-anchor> |
+    <spa-anchor href="/cards/update">CARD_UPDATE</spa-anchor> |
+    <spa-anchor href="/cards/detail">CARD_DETAIL</spa-anchor> |
+    <spa-anchor href="/question">QUESTION</spa-anchor>
     <div id="app"></div>
 `
 
@@ -55,3 +56,10 @@ updateView();
 window.addEventListener("popstate", () => {
     updateView();
 });
+
+// View更新イベント発生時の処理
+window.addEventListener("updateView", event => {
+    const href = event.detail;
+    window.history.pushState(null, "", href);
+    updateView();
+})
