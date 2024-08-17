@@ -78,7 +78,12 @@ export default class CardAddPage extends HTMLElement {
         const input = event.target;
         const file = input.files[0];
         const reader = new FileReader();
+
         const img = document.createElement("img");
+        img.onclick = event => {
+            if (confirm("Do you want to delete this image?"))
+                event.target.remove();
+        }
 
         reader.onload = e => {
             img.src = e.target.result;
