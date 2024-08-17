@@ -16,11 +16,11 @@ export default class CardDetailPage extends HTMLElement {
         fetch(url).then(async res => {
             const card = await res.json();
             const html = `
-                ${card.frontImages.map(image => `<img src="/images/${image.uuid}" width="100%"/>`)}
+                ${card.frontImages.map(image => `<img src="/images/${image.uuid}" width="100%"/>`).join("")}
                 <p>frontText: ${card.frontText}</p>
                 <hr>
 
-                ${card.backImages.map(image => `<img src="/images/${image.uuid}" width="100%"/>`)}
+                ${card.backImages.map(image => `<img src="/images/${image.uuid}" width="100%"/>`).join("")}
                 <p>backText: ${card.backText}</p>
                 <hr>
                 
