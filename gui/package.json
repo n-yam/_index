@@ -1,0 +1,27 @@
+{
+  "name": "index",
+  "version": "1.0.0",
+  "description": "Index is an app that supports your memorization efforts.",
+  "main": "index.js",
+  "scripts": {
+    "build-dev": "npx webpack --mode development",
+    "build": "npx webpack --mode production",
+    "serve": "npx webpack serve --mode development",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n-yam/index.git"
+  },
+  "author": "nyama",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/n-yam/index/issues"
+  },
+  "homepage": "https://github.com/n-yam/index#readme",
+  "devDependencies": {
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
+  }
+}
