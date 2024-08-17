@@ -61,3 +61,16 @@ def card_put(id, front_text, back_text):
     response = client.put(url, data=formData)
 
     return response
+
+
+def card_put_with_images(id, front_text, back_text, front_images, back_images):
+    url = "/api/cards/{}".format(id)
+    formData = {
+        "frontText": front_text,
+        "backText": back_text,
+        "frontImage": front_images,
+        "backImage": back_images,
+    }
+    response = client.put(url, data=formData)
+
+    return response

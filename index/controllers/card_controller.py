@@ -76,8 +76,9 @@ def card_put(id):
         back_text = request.form["backText"]
 
         card = Card(id=id, front_text=front_text, back_text=back_text)
+        files = request.files
 
-        card_updated = card_service.update(card)
+        card_updated = card_service.update(card, files)
         json = CardSchema().dump(card_updated)
 
         return json

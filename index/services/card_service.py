@@ -4,7 +4,7 @@ from sqlalchemy import func
 from datetime import datetime
 
 from index import config
-from index.models.model import Card, FrontImage, BackImage
+from index.models.model import Card, Image, FrontImage, BackImage
 from index.database import get_session
 from index.config import CARD_LENGTH_MAX, IMAGE_DIR
 
@@ -36,7 +36,7 @@ class CardService:
 
         return uuid
 
-    def update(self, newCard):
+    def update(self, newCard, files):
         try:
             with get_session() as session:
                 card = session.query(Card).filter_by(id=newCard.id).first()
@@ -44,11 +44,29 @@ class CardService:
                 if card is None:
                     raise CardNotFoundException
 
+                # Delete old data
+                session.query(Image).filter_by(card_id=card.id).delete()
+                self.remove_image_file(card)
+
+                # Add new images
+                for file in files.getlist("frontImage"):
+                    uuid = self.write_image_file(file)
+                    front_image = FrontImage(uuid=uuid, card=card)
+                    session.add(front_image)
+
+                for file in files.getlist("backImage"):
+                    uuid = self.write_image_file(file)
+                    back_image = BackImage(uuid=uuid, card=card)
+                    session.add(back_image)
+
+                # Update texts and etc.
                 card.front_text = newCard.front_text
                 card.back_text = newCard.back_text
                 card.updated = datetime.now()
+
                 session.commit()
 
+                # Return
                 card_updated = session.query(Card).filter_by(id=newCard.id).first()
 
                 return card_updated

@@ -172,6 +172,55 @@ def test_card_put(auto_cleanup):
     assert response_put.json["updated"] == datetime.now().strftime(DATETIME_FORMAT)
 
 
+def test_card_put_with_images(auto_cleanup):
+    # Post
+    front_text_before = "[POST] THIS IS FRONT TEXT"
+    back_text_before = "[POST] THIS IS BACK TEXT"
+    front_images_before = [
+        Path("tests/data/dog.jpg").open("rb"),
+        Path("tests/data/cat.jpg").open("rb"),
+    ]
+    back_images_before = [Path("tests/data/bird.jpg").open("rb")]
+
+    response_post = utils.card_post_with_images(
+        front_text_before, back_text_before, front_images_before, back_images_before
+    )
+
+    assert response_post.status_code == 200
+
+    id = response_post.json["id"]
+    uuid_front_01 = response_post.json["frontImages"][0]["uuid"]
+    uuid_front_02 = response_post.json["frontImages"][1]["uuid"]
+    uuid_back_01 = response_post.json["backImages"][0]["uuid"]
+
+    # Put
+    front_text_after = "[PUT] ## FRONT TEXT ##"
+    back_text_after = "[PUT] ## BACK TEXT ##"
+    front_images_after = [
+        Path("tests/data/dog.jpg").open("rb"),
+        Path("tests/data/cat.jpg").open("rb"),
+    ]
+    back_images_after = [Path("tests/data/bird.jpg").open("rb")]
+
+    response_put = utils.card_put_with_images(
+        id, front_text_after, back_text_after, front_images_after, back_images_after
+    )
+
+    assert response_put.status_code == 200
+    assert response_put.json["frontText"] == front_text_after
+    assert response_put.json["backText"] == back_text_after
+    assert response_put.json["frontImages"][0]["uuid"] != uuid_front_01
+    assert response_put.json["frontImages"][1]["uuid"] != uuid_front_02
+    assert response_put.json["backImages"][0]["uuid"] != uuid_back_01
+    assert response_put.json["level"] == 0
+    assert response_put.json["fresh"] is True
+    assert response_put.json["todo"] is False
+    assert response_put.json["done"] is False
+    assert response_put.json["next"] == CARD_NEXT_DEFAULT
+    assert response_put.json["created"] == datetime.now().strftime(DATETIME_FORMAT)
+    assert response_put.json["updated"] == datetime.now().strftime(DATETIME_FORMAT)
+
+
 def test_card_put_404(auto_cleanup):
     unknown_id = 99999
     response = utils.card_put(unknown_id, "", "")
