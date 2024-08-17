@@ -6,12 +6,12 @@ export default class CardAddPage extends HTMLElement {
             <div>CARD ADD PAGE</div>
             
             <div id="frontImagesDiv"></div>
-            <button id="addFrontImageButton">add</button><br>
+            <input id="frontImageInput" type="file" accept="image/jpeg"><br>
             <textarea id="frontTextarea"></textarea>
             <hr>
             
             <div id="backImagesDiv"></div>
-            <button id="addBackImageButton">add</button><br>
+            <input id="backImageInput" type="file" accept="image/jpeg"><br>
             <textarea id="backTextarea"></textarea><br>
             <button id="saveButton">save</button>
         `;
@@ -19,15 +19,15 @@ export default class CardAddPage extends HTMLElement {
 
     connectedCallback() {
         const saveButton = this.querySelector("#saveButton");
-        const addFrontImageButton = this.querySelector("#addFrontImageButton");
-        const addBackImageButton = this.querySelector("#addBackImageButton");
+        const frontImageInput = this.querySelector("#frontImageInput");
+        const backImageInput = this.querySelector("#backImageInput");
 
         saveButton.addEventListener("click", this.handleSave);
-        addFrontImageButton.addEventListener("click", this.handleAddFrontImage);
-        addBackImageButton.addEventListener("click", this.handleAddBackImage);
+        frontImageInput.addEventListener("change", this.handleChange);
+        backImageInput.addEventListener("change", this.handleChange);
     }
 
-    handleSave = event => {
+    handleSave = async event => {
         const frontTextarea = this.querySelector("#frontTextarea");
         const backTextarea = this.querySelector("#backTextarea");
 
@@ -39,12 +39,22 @@ export default class CardAddPage extends HTMLElement {
         formData.append("frontText", frontText);
         formData.append("backText", backText);
 
-        this.querySelectorAll("input[name='frontImage']").forEach(input => {
-            formData.append("frontImage", input.files[0]);
-        });
-        this.querySelectorAll("input[name='backImage']").forEach(input => {
-            formData.append("backImage", input.files[0]);
-        });
+        const frontImages = this.querySelector("#frontImagesDiv").querySelectorAll("img");
+        const backImages = this.querySelector("#backImagesDiv").querySelectorAll("img");
+
+        for (let img of frontImages) {
+            const base64Image = img.src;
+            const response = await fetch(base64Image);
+            const blob = await response.blob();
+            formData.append("frontImage", blob);
+        };
+
+        for (let img of backImages) {
+            const base64Image = img.src;
+            const response = await fetch(base64Image);
+            const blob = await response.blob();
+            formData.append("backImage", blob);
+        };
 
         const url = "http://localhost:8000/api/cards";
         const options = {
@@ -58,21 +68,32 @@ export default class CardAddPage extends HTMLElement {
                 backTextarea.value = "";
                 this.querySelectorAll("input[type='file']").forEach(input => {
                     input.value = "";
+                    this.querySelectorAll("img").forEach(img => img.remove());
                 });
             }
         });
     }
 
-    handleAddFrontImage = event => {
-        const frontImagesDiv = this.querySelector("#frontImagesDiv");
-        const html = `<input type="file" accept="image/jpeg" name="frontImage"><br></br>`;
-        frontImagesDiv.insertAdjacentHTML("beforeend", html);
-    }
+    handleChange = event => {
+        const input = event.target;
+        const file = input.files[0];
+        const reader = new FileReader();
+        const img = document.createElement("img");
 
-    handleAddBackImage = event => {
-        const backImagesDiv = this.querySelector("#backImagesDiv");
-        const html = `<input type="file" accept="image/jpeg" name="backImage"><br>`;
-        backImagesDiv.insertAdjacentHTML("beforeend", html);
+        reader.onload = e => {
+            img.src = e.target.result;
+            img.style.width = "100%";
+        }
+
+        reader.readAsDataURL(file);
+
+        if (input.id == "frontImageInput")
+            document.querySelector("#frontImagesDiv").appendChild(img);
+
+        if (input.id == "backImageInput")
+            document.querySelector("#backImagesDiv").appendChild(img);
+
+        input.value = "";
     }
 }
 
