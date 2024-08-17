@@ -63,6 +63,9 @@ class QuestionService:
                     .first()
                 )
 
+                if question is None:
+                    raise QuestionNotFoundException
+
                 return question
 
         except Exception as e:
@@ -71,6 +74,9 @@ class QuestionService:
     def answer(self, answer):
         try:
             card = self.first()
+
+            if card is None:
+                raise QuestionNotFoundException
 
             if answer == "0":
                 card.level_down()
@@ -86,3 +92,8 @@ class QuestionService:
 
         except Exception as e:
             raise e
+
+
+class QuestionNotFoundException(Exception):
+    def __init__(self, arg=""):
+        self.arg = arg

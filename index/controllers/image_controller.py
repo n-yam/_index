@@ -9,8 +9,9 @@ image_controller = Blueprint("image_controller", __name__)
 def images_get(uuid):
     try:
         path = "{}/{}.jpg".format(config.IMAGE_DIR, uuid)
+        response = send_file(path, mimetype="image/jpeg")
 
-        return send_file(path, mimetype="image/jpeg")
+        return response
 
     except FileNotFoundError:
         return "", 404

@@ -18,7 +18,6 @@ def card_post():
         files = request.files
 
         card_saved = card_service.add(card, files)
-
         json = CardSchema().dump(card_saved)
 
         return json
@@ -33,7 +32,6 @@ def card_get_all():
     try:
         cards = card_service.get_all()
         json = CardSchema(many=True).dump(cards)
-
         return json
 
     except Exception as e:
@@ -45,9 +43,7 @@ def card_get_all():
 def card_get(id):
     try:
         card = card_service.get(id)
-
         json = CardSchema().dump(card)
-
         return json
 
     except CardNotFoundException:
@@ -62,12 +58,7 @@ def card_get(id):
 def card_get_random():
     try:
         card = card_service.get_random()
-
-        if card is None:
-            return "", 404
-
         json = CardSchema().dump(card)
-
         return json
 
     except CardNotFoundException:
@@ -85,9 +76,11 @@ def card_put(id):
         back_text = request.form["backText"]
 
         card = Card(id=id, front_text=front_text, back_text=back_text)
-        card_updated = card_service.update(card)
 
-        return CardSchema().dump(card_updated)
+        card_updated = card_service.update(card)
+        json = CardSchema().dump(card_updated)
+
+        return json
 
     except CardNotFoundException:
         return "", 404
