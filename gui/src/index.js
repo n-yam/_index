@@ -1,10 +1,10 @@
-import TopPage from "./TopPage";
-import CardAddPage from "./CardAddPage";
-import CardListPage from "./CardListPage"
-import CardUpdatePage from "./CardUpdatePage";
-import CardDetailPage from "./CardDetailPage";
-import QuestionPage from "./QuestionPage";
-import NotFoundPage from "./NotFoundPage"
+import TopPage from "./pages/TopPage";
+import CardAddPage from "./pages/CardAddPage";
+import CardListPage from "./pages/CardListPage"
+import CardUpdatePage from "./pages/CardUpdatePage";
+import CardDetailPage from "./pages/CardDetailPage";
+import QuestionPage from "./pages/QuestionPage";
+import NotFoundPage from "./pages/NotFoundPage"
 
 document.body.innerHTML = `
     <a href="/">TOP</a>
