@@ -1,15 +1,25 @@
 import os
+from uuid import uuid4
 from sqlalchemy import func
 from datetime import datetime
 
-from index.models.model import Card, Image
+from index import config
+from index.models.model import Card, Image, FrontImage, BackImage
 from index.database import get_session
 from index.config import CARD_LENGTH_MAX, IMAGE_DIR
 
 
 class CardService:
-    def add(self, card):
+    def add(self, card, files):
         try:
+            for file in files.getlist("frontImage"):
+                uuid = self.write(file)
+                FrontImage(uuid=uuid, card=card)
+
+            for file in files.getlist("backImage"):
+                uuid = self.write(file)
+                BackImage(uuid=uuid, card=card)
+
             with get_session() as session:
                 session.add(card)
                 session.commit()
@@ -18,6 +28,13 @@ class CardService:
 
         except Exception as e:
             raise e
+
+    def write(self, file):
+        uuid = uuid = str(uuid4())
+        path = "{}/{}.jpg".format(config.IMAGE_DIR, uuid)
+        file.save(path)
+
+        return uuid
 
     def update(self, newCard):
         try:

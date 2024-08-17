@@ -1,8 +1,6 @@
-from uuid import uuid4
 from flask import Blueprint, request
 
-from index import config
-from index.models.model import Card, FrontImage, BackImage
+from index.models.model import Card
 from index.models.schema import CardSchema
 from index.services.card_service import CardService, CardNotFoundException
 
@@ -16,28 +14,9 @@ def card_post():
     back_text = request.form["backText"]
 
     card = Card(front_text=front_text, back_text=back_text)
+    files = request.files
 
-    for file in request.files.getlist("frontImage"):
-        uuid = uuid = str(uuid4())
-
-        # Write to file
-        path = "{}/{}.jpg".format(config.IMAGE_DIR, uuid)
-        file.save(path)
-
-        # Link to card
-        FrontImage(uuid=uuid, card=card)
-
-    for file in request.files.getlist("backImage"):
-        uuid = uuid = str(uuid4())
-
-        # Write to file
-        path = "{}/{}.jpg".format(config.IMAGE_DIR, uuid)
-        file.save(path)
-
-        # Link to card
-        BackImage(uuid=uuid, card=card)
-
-    card_saved = card_service.add(card)
+    card_saved = card_service.add(card, files)
 
     json = CardSchema().dump(card_saved)
 
