@@ -26,3 +26,5 @@ QUESTION_FRESH_MAX = 10
 TIME_FORMAT = "%H:%M:%S"
 DATE_FORMAT = "%Y-%m-%d"
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
+
+CORS_ORIGINS = "http://localhost:9000"
