@@ -1,18 +1,20 @@
+import TopPage from "./TopPage";
+import CardAddPage from "./CardAddPage";
+import CardListPage from "./CardListPage"
+import CardUpdatePage from "./CardUpdatePage";
+import CardDetailPage from "./CardDetailPage";
+import QuestionPage from "./QuestionPage";
+import NotFoundPage from "./NotFoundPage"
+
 document.body.innerHTML = `
     <a href="/">TOP</a>
-    <a href="/hello">HELLO</a>
-    <a href="/profile">PROFILE</a>
+    <a href="/cards/add">CARD_ADD</a>
+    <a href="/cards/list">CARD_LIST</a>
+    <a href="/cards/update">CARD_UPDATE</a> 
+    <a href="/cards/detail">CARD_DETAIL</a>
+    <a href="/question">QUESTION</a>
     <div id="app"></div>
 `
-
-function component() {
-    const element = document.createElement('div');
-    element.innerHTML = "HELLO WORLD";
-
-    return element;
-}
-
-document.body.appendChild(component());
 
 document.querySelectorAll("a").forEach(a => {
     a.onclick = event => {
@@ -23,19 +25,19 @@ document.querySelectorAll("a").forEach(a => {
 
 const updateView = () => {
     const pages = {
-        "/": `
-        <h1>TOP</h1>
-      `,
-        "/hello": `
-        <h1>HELLO</h1>
-      `,
-        "/profile": `
-        <h1>PROFILE</h1>
-      `
+        "/": new TopPage(),
+        "/cards/add": new CardAddPage(),
+        "/cards/list": new CardListPage(),
+        "/cards/update": new CardUpdatePage(),
+        "/cards/detail": new CardDetailPage(),
+        "/question": new QuestionPage(),
     };
-    const page = pages[window.location.pathname];
-    const render = page || `<h1>404:Not Found<h1>`;
-    document.getElementById("app").innerHTML = render;
+
+    const page = pages[window.location.pathname] || new NotFoundPage();
+    const app = document.getElementById("app");
+    const previousPage = app.lastElementChild;
+
+    previousPage ? app.replaceChild(page, previousPage) : app.appendChild(page);
 };
 
 document.querySelectorAll("a").forEach(a => {
