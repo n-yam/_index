@@ -86,14 +86,15 @@ class CardService:
     def remove(self, id):
         try:
             with get_session() as session:
-                card = session.query(Card).filter(Card.id == id).first()
+                query = session.query(Card).filter(Card.id == id)
+                card = query.first()
+
                 if card is None:
                     raise CardNotFoundException
+
+                query.delete()
                 self.remove_image_file(card)
 
-            with get_session() as session:
-                session.query(Card).filter(Card.id == id).delete()
-                session.query(Image).filter(Image.card_id == id).delete()
                 session.commit()
 
         except Exception as e:

@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from sqlalchemy.orm import relationship, mapped_column
+from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Integer, String, Date, DateTime, Boolean
 
@@ -93,7 +93,7 @@ class Image(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     uuid = Column(String(36))
     side = Column(String(5))
-    card_id = mapped_column(ForeignKey("cards.id"))
+    card_id = Column(ForeignKey("cards.id", ondelete="cascade"))
 
 
 class FrontImage(Image):
