@@ -34,6 +34,7 @@ const updateView = () => {
     };
 
     const page = pages[window.location.pathname] || new NotFoundPage();
+
     const app = document.getElementById("app");
     const previousPage = app.lastElementChild;
 
