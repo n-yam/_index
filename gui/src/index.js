@@ -12,7 +12,6 @@ document.body.innerHTML = `
         <spa-anchor href="/">TOP</spa-anchor> |
         <spa-anchor href="/cards/add">CARD_ADD</spa-anchor> |
         <spa-anchor href="/cards/list">CARD_LIST</spa-anchor> |
-        <spa-anchor href="/cards/update">CARD_UPDATE</spa-anchor> |
         <spa-anchor href="/question">QUESTION</spa-anchor>
     </header>
 

@@ -1,3 +1,5 @@
+import SpaAnchor from "../components/SpaAnchor";
+
 export default class CardDetailPage extends HTMLElement {
 
     constructor() {
@@ -32,6 +34,8 @@ export default class CardDetailPage extends HTMLElement {
                 <p>fresh: ${card.fresh}</p>
                 <p>todo: ${card.todo}</p>
                 <p>done: ${card.done}</p>
+
+                <spa-anchor href="/cards/update?id=${card.id}">edit</spa-anchor>
             `;
             this.insertAdjacentHTML("beforeend", html);
         });
