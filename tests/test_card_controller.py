@@ -40,9 +40,9 @@ def test_card_post_with_images(auto_cleanup):
     back_text = "[POST] THIS IS BACK TEXT"
     front_images = [
         Path("tests/data/dog.jpg").open("rb"),
-        Path("tests/data/cat.jpg").open("rb"),
+        Path("tests/data/monkey.jpg").open("rb"),
     ]
-    back_images = [Path("tests/data/bird.jpg").open("rb")]
+    back_images = [Path("tests/data/pheasant.jpg").open("rb")]
 
     response = utils.card_post_with_images(
         front_text, back_text, front_images, back_images
@@ -178,9 +178,9 @@ def test_card_put_with_images(auto_cleanup):
     back_text_before = "[POST] THIS IS BACK TEXT"
     front_images_before = [
         Path("tests/data/dog.jpg").open("rb"),
-        Path("tests/data/cat.jpg").open("rb"),
+        Path("tests/data/monkey.jpg").open("rb"),
     ]
-    back_images_before = [Path("tests/data/bird.jpg").open("rb")]
+    back_images_before = [Path("tests/data/pheasant.jpg").open("rb")]
 
     response_post = utils.card_post_with_images(
         front_text_before, back_text_before, front_images_before, back_images_before
@@ -198,9 +198,9 @@ def test_card_put_with_images(auto_cleanup):
     back_text_after = "[PUT] ## BACK TEXT ##"
     front_images_after = [
         Path("tests/data/dog.jpg").open("rb"),
-        Path("tests/data/cat.jpg").open("rb"),
+        Path("tests/data/monkey.jpg").open("rb"),
     ]
-    back_images_after = [Path("tests/data/bird.jpg").open("rb")]
+    back_images_after = [Path("tests/data/pheasant.jpg").open("rb")]
 
     response_put = utils.card_put_with_images(
         id, front_text_after, back_text_after, front_images_after, back_images_after
@@ -235,9 +235,9 @@ def test_card_delete(auto_cleanup):
     back_text = "[POST] THIS IS BACK TEXT"
     front_images = [
         Path("tests/data/dog.jpg").open("rb"),
-        Path("tests/data/cat.jpg").open("rb"),
+        Path("tests/data/monkey.jpg").open("rb"),
     ]
-    back_images = [Path("tests/data/bird.jpg").open("rb")]
+    back_images = [Path("tests/data/pheasant.jpg").open("rb")]
 
     response_post = utils.card_post_with_images(
         front_text, back_text, front_images, back_images
