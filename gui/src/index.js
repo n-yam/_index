@@ -1,3 +1,10 @@
+document.body.innerHTML = `
+    <a href="/">TOP</a>
+    <a href="/hello">HELLO</a>
+    <a href="/profile">PROFILE</a>
+    <div id="app"></div>
+`
+
 function component() {
     const element = document.createElement('div');
     element.innerHTML = "HELLO WORLD";
