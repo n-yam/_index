@@ -15,6 +15,12 @@ module.exports = {
         compress: true,
         port: 9000,
         historyApiFallback: true,
+        proxy: [
+            {
+                context: ['/images'],
+                target: 'http://localhost:8000',
+            },
+        ],
     },
     plugins: [new HtmlWebpackPlugin()],
 };

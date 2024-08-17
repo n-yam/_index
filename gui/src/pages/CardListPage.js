@@ -1,3 +1,5 @@
+import SpaAnchor from "../components/SpaAnchor";
+
 export default class CardListPage extends HTMLElement {
 
     constructor() {
@@ -35,7 +37,7 @@ export default class CardListPage extends HTMLElement {
                 const level = row.insertCell(3);
                 const next = row.insertCell(4);
 
-                id.innerHTML = card.id;
+                id.innerHTML = `<spa-anchor href="/cards/detail?id=${card.id}">${card.id}</spa-anchor>`;
                 frontText.innerHTML = card.frontText.substring(0, 10);
                 backText.innerHTML = card.backText.substring(0, 10);
                 level.innerHTML = card.level;

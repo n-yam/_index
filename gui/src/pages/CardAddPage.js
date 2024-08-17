@@ -65,13 +65,13 @@ export default class CardAddPage extends HTMLElement {
 
     handleAddFrontImage = event => {
         const frontImagesDiv = this.querySelector("#frontImagesDiv");
-        const html = "<input type='file' accept='image/jpeg' name='frontImage'><br></br>";
+        const html = `<input type="file" accept="image/jpeg" name="frontImage"><br></br>`;
         frontImagesDiv.insertAdjacentHTML("beforeend", html);
     }
 
     handleAddBackImage = event => {
         const backImagesDiv = this.querySelector("#backImagesDiv");
-        const html = "<input type='file' accept='image/jpeg' name='backImage'><br>";
+        const html = `<input type="file" accept="image/jpeg" name="backImage"><br>`;
         backImagesDiv.insertAdjacentHTML("beforeend", html);
     }
 }
