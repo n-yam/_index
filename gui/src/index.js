@@ -8,13 +8,19 @@ import NotFoundPage from "./pages/NotFoundPage"
 import SpaAnchor from "./components/SpaAnchor";
 
 document.body.innerHTML = `
-    <spa-anchor href="/">TOP</spa-anchor> |
-    <spa-anchor href="/cards/add">CARD_ADD</spa-anchor> |
-    <spa-anchor href="/cards/list">CARD_LIST</spa-anchor> |
-    <spa-anchor href="/cards/update">CARD_UPDATE</spa-anchor> |
-    <spa-anchor href="/cards/detail">CARD_DETAIL</spa-anchor> |
-    <spa-anchor href="/question">QUESTION</spa-anchor>
+    <header>
+        <spa-anchor href="/">TOP</spa-anchor> |
+        <spa-anchor href="/cards/add">CARD_ADD</spa-anchor> |
+        <spa-anchor href="/cards/list">CARD_LIST</spa-anchor> |
+        <spa-anchor href="/cards/update">CARD_UPDATE</spa-anchor> |
+        <spa-anchor href="/cards/detail">CARD_DETAIL</spa-anchor> |
+        <spa-anchor href="/question">QUESTION</spa-anchor>
+    </header>
+
     <div id="app"></div>
+    
+    <footer>
+    </footer>
 `
 
 const updateView = () => {
