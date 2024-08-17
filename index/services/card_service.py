@@ -13,11 +13,11 @@ class CardService:
     def add(self, card, files):
         try:
             for file in files.getlist("frontImage"):
-                uuid = self.write(file)
+                uuid = self.write_image_file(file)
                 FrontImage(uuid=uuid, card=card)
 
             for file in files.getlist("backImage"):
-                uuid = self.write(file)
+                uuid = self.write_image_file(file)
                 BackImage(uuid=uuid, card=card)
 
             with get_session() as session:
@@ -29,7 +29,7 @@ class CardService:
         except Exception as e:
             raise e
 
-    def write(self, file):
+    def write_image_file(self, file):
         uuid = uuid = str(uuid4())
         path = "{}/{}.jpg".format(config.IMAGE_DIR, uuid)
         file.save(path)
@@ -89,7 +89,7 @@ class CardService:
                 card = session.query(Card).filter(Card.id == id).first()
                 if card is None:
                     raise CardNotFoundException
-                self.remove_image(card)
+                self.remove_image_file(card)
 
             with get_session() as session:
                 session.query(Card).filter(Card.id == id).delete()
@@ -99,7 +99,7 @@ class CardService:
         except Exception as e:
             raise e
 
-    def remove_image(self, card):
+    def remove_image_file(self, card):
         images = []
 
         for front_image in card.front_images:
