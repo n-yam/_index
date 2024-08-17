@@ -33,7 +33,7 @@ curl -XDELETE localhost:8000/api/cards/1
 # Get quesiton
 curl -XGET localhost:8000/api/questions/first
 
-# Answer Question
+# Answer question
 curl -XPOST localhost:8000/api/questions/first?answer=1  # succeed
 curl -XPOST localhost:8000/api/questions/first?answer=0  # failed
 
