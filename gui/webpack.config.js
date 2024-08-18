@@ -22,7 +22,7 @@ module.exports = (env, argv) => {
             historyApiFallback: true,
             proxy: [
                 {
-                    context: ['/images'],
+                    context: ['/static'],
                     target: 'http://localhost:8000',
                 },
             ],

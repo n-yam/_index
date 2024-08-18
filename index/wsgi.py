@@ -7,12 +7,10 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from index import config
 from index.jobs import dbresetter
 from index.controllers.card_controller import card_controller
-from index.controllers.image_controller import image_controller
 from index.controllers.question_controller import question_controller
 
 application = Flask(__name__, static_folder="static")
 application.register_blueprint(card_controller)
-application.register_blueprint(image_controller)
 application.register_blueprint(question_controller)
 
 

@@ -45,7 +45,7 @@ export default class CardAddPage extends HTMLElement {
                 backTextarea.value = card.backText;
 
                 card.frontImages.forEach(frontImage => {
-                    const src = `${API_SERVER}/images/${frontImage.uuid}`;
+                    const src = `${API_SERVER}/static/images/${frontImage.uuid}.jpg`;
                     const img = document.createElement("img");
 
                     img.src = src;
@@ -59,7 +59,7 @@ export default class CardAddPage extends HTMLElement {
                 });
 
                 card.backImages.forEach(backImage => {
-                    const src = `${API_SERVER}/images/${backImage.uuid}`;
+                    const src = `${API_SERVER}/static/images/${backImage.uuid}.jpg`;
                     const img = document.createElement("img");
 
                     img.src = src;
