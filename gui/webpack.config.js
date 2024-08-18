@@ -23,4 +23,12 @@ module.exports = {
         ],
     },
     plugins: [new HtmlWebpackPlugin()],
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
+            },
+        ],
+    },
 };

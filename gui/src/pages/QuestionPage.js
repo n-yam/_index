@@ -87,15 +87,15 @@ export default class QuestionPage extends HTMLElement {
 
         const frontside = this.querySelector("#frontside");
         frontside.innerHTML = `
-            ${card.frontImages.map(image => `<img src="/images/${image.uuid}" width="100%"/>`).join("")}
-            <p>frontText: ${card.frontText}</p>
+            ${card.frontImages.map(image => `<img src="/images/${image.uuid}"/>`).join("")}
+            <p>${card.frontText}</p>
         `;
 
         const backside = this.querySelector("#backside");
         backside.style.display = "none";
         backside.innerHTML = `
-            ${card.backImages.map(image => `<img src="/images/${image.uuid}" width="100%"/>`).join("")}
-            <p>backText: ${card.backText}</p>
+            ${card.backImages.map(image => `<img src="/images/${image.uuid}"/>`).join("")}
+            <p>${card.backText}</p>
         `;
 
         const detailDiv = this.querySelector("#detailDiv");

@@ -1,0 +1,13 @@
+img {
+    width: 100%;
+}
+
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    height: 48px;
+    width: 96px;
+}

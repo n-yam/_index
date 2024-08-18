@@ -49,7 +49,6 @@ export default class CardAddPage extends HTMLElement {
                     const img = document.createElement("img");
 
                     img.src = src;
-                    img.style.width = "100%";
                     img.onclick = event => {
                         if (confirm("Do you want to delete this image?"))
                             event.target.remove();
@@ -64,7 +63,6 @@ export default class CardAddPage extends HTMLElement {
                     const img = document.createElement("img");
 
                     img.src = src;
-                    img.style.width = "100%";
                     img.onclick = event => {
                         if (confirm("Do you want to delete this image?"))
                             event.target.remove();
@@ -168,10 +166,7 @@ export default class CardAddPage extends HTMLElement {
                 event.target.remove();
         }
 
-        reader.onload = e => {
-            img.src = e.target.result;
-            img.style.width = "100%";
-        }
+        reader.onload = e => img.src = e.target.result;
 
         reader.readAsDataURL(file);
 

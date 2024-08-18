@@ -1,3 +1,5 @@
+import "./css/global.css";
+
 import TopPage from "./pages/TopPage";
 import CardEditPage from "./pages/CardEditPage";
 import CardListPage from "./pages/CardListPage"
