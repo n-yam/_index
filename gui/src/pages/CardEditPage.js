@@ -12,6 +12,7 @@ export default class CardAddPage extends HTMLElement {
             <input id="backImageInput" type="file" accept="image/jpeg"><br>
             <textarea id="backTextarea"></textarea><br>
             <button id="saveButton">save</button>
+            <button id="deleteButton">delete</button>
         `;
     }
 
@@ -27,6 +28,7 @@ export default class CardAddPage extends HTMLElement {
         const backImageInput = this.querySelector("#backImageInput");
 
         saveButton.addEventListener("click", this.handleSave);
+        deleteButton.addEventListener("click", this.handleDelete);
         frontImageInput.addEventListener("change", this.handleChange);
         backImageInput.addEventListener("change", this.handleChange);
 
@@ -121,7 +123,6 @@ export default class CardAddPage extends HTMLElement {
             }
         }
 
-
         fetch(url, options).then(async res => {
             if (res.status == 200) {
                 if (this.editMode) {
@@ -138,6 +139,22 @@ export default class CardAddPage extends HTMLElement {
                 }
             }
         });
+    }
+
+    handleDelete = async event => {
+        if (confirm("Do you want to delete this card?")) {
+            const url = `http://localhost:8000/api/cards/${this.id}`;
+            const options = {
+                method: "DELETE"
+            };
+            fetch(url, options).then(async res => {
+                if (res.status == 200) {
+                    const href = "/cards/list";
+                    const event = new CustomEvent("updateView", { detail: href });
+                    window.dispatchEvent(event);
+                }
+            });
+        }
     }
 
     handleChange = event => {
