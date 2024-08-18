@@ -1,7 +1,6 @@
 import TopPage from "./pages/TopPage";
-import CardAddPage from "./pages/CardAddPage";
+import CardEditPage from "./pages/CardEditPage";
 import CardListPage from "./pages/CardListPage"
-import CardUpdatePage from "./pages/CardUpdatePage";
 import CardDetailPage from "./pages/CardDetailPage";
 import QuestionPage from "./pages/QuestionPage";
 import NotFoundPage from "./pages/NotFoundPage"
@@ -24,9 +23,9 @@ document.body.innerHTML = `
 const updateView = () => {
     const pages = {
         "/": new TopPage(),
-        "/cards/add": new CardAddPage(),
+        "/cards/add": new CardEditPage(),
         "/cards/list": new CardListPage(),
-        "/cards/update": new CardUpdatePage(),
+        "/cards/update": new CardEditPage(),
         "/cards/detail": new CardDetailPage(),
         "/question": new QuestionPage(),
     };

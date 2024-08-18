@@ -11,7 +11,7 @@ export default class CardDetailPage extends HTMLElement {
 
     connectedCallback() {
         const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get('id');
+        const id = urlParams.get("id");
 
         const url = `http://localhost:8000/api/cards/${id}`;
 

@@ -18,6 +18,12 @@ export default class CardAddPage extends HTMLElement {
     }
 
     connectedCallback() {
+        // Set default values
+        const urlParams = new URLSearchParams(window.location.search);
+        this.id = urlParams.get("id");
+        this.editMode = this.id !== "null";
+        console.log(`editMode: ${this.editMode}`);
+
         const saveButton = this.querySelector("#saveButton");
         const frontImageInput = this.querySelector("#frontImageInput");
         const backImageInput = this.querySelector("#backImageInput");
@@ -25,6 +31,50 @@ export default class CardAddPage extends HTMLElement {
         saveButton.addEventListener("click", this.handleSave);
         frontImageInput.addEventListener("change", this.handleChange);
         backImageInput.addEventListener("change", this.handleChange);
+
+        if (this.editMode) {
+            const url = `http://localhost:8000/api/cards/${this.id}`;
+
+            fetch(url).then(async res => {
+                const card = await res.json();
+
+                const frontTextarea = this.querySelector("#frontTextarea");
+                const backTextarea = this.querySelector("#backTextarea");
+
+                frontTextarea.value = card.frontText;
+                backTextarea.value = card.backText;
+
+                card.frontImages.forEach(frontImage => {
+                    const src = `http://localhost:8000/images/${frontImage.uuid}`;
+                    const img = document.createElement("img");
+
+                    img.src = src;
+                    img.style.width = "100%";
+                    img.onclick = event => {
+                        if (confirm("Do you want to delete this image?"))
+                            event.target.remove();
+                    }
+
+                    const frontImagesDiv = this.querySelector("#frontImagesDiv");
+                    frontImagesDiv.appendChild(img);
+                });
+
+                card.backImages.forEach(backImage => {
+                    const src = `http://localhost:8000/images/${backImage.uuid}`;
+                    const img = document.createElement("img");
+
+                    img.src = src;
+                    img.style.width = "100%";
+                    img.onclick = event => {
+                        if (confirm("Do you want to delete this image?"))
+                            event.target.remove();
+                    }
+
+                    const backImagesDiv = this.querySelector("#backImagesDiv");
+                    backImagesDiv.appendChild(img);
+                });
+            });
+        }
     }
 
     handleSave = async event => {
@@ -56,20 +106,38 @@ export default class CardAddPage extends HTMLElement {
             formData.append("backImage", blob);
         };
 
-        const url = "http://localhost:8000/api/cards";
-        const options = {
-            method: "POST",
-            body: formData,
+        let url;
+        let options;
+
+        if (this.editMode) {
+            url = `http://localhost:8000/api/cards/${this.id}`;
+            options = {
+                method: "PUT",
+                body: formData,
+            }
+        } else {
+            url = `http://localhost:8000/api/cards`;
+            options = {
+                method: "POST",
+                body: formData,
+            }
         }
+
 
         fetch(url, options).then(async res => {
             if (res.status == 200) {
-                frontTextarea.value = "";
-                backTextarea.value = "";
-                this.querySelectorAll("input[type='file']").forEach(input => {
-                    input.value = "";
-                    this.querySelectorAll("img").forEach(img => img.remove());
-                });
+                if (this.editMode) {
+                    const href = `/cards/detail?id=${this.id}`;
+                    const event = new CustomEvent("updateView", { detail: href });
+                    window.dispatchEvent(event);
+                } else {
+                    frontTextarea.value = "";
+                    backTextarea.value = "";
+                    this.querySelectorAll("input[type='file']").forEach(input => {
+                        input.value = "";
+                        this.querySelectorAll("img").forEach(img => img.remove());
+                    });
+                }
             }
         });
     }
