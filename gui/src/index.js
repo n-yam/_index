@@ -9,9 +9,10 @@ import SpaAnchor from "./components/SpaAnchor";
 document.body.innerHTML = `
     <header>
         <spa-anchor href="/">TOP</spa-anchor> |
-        <spa-anchor href="/cards/add">CARD_ADD</spa-anchor> |
-        <spa-anchor href="/cards/list">CARD_LIST</spa-anchor> |
+        <spa-anchor href="/cards/add">ADD</spa-anchor> |
+        <spa-anchor href="/cards/list">LIST</spa-anchor> |
         <spa-anchor href="/question">QUESTION</spa-anchor>
+        <hr>
     </header>
 
     <div id="app"></div>

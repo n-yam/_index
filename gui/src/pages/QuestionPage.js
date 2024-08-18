@@ -5,7 +5,6 @@ export default class QuestionPage extends HTMLElement {
     constructor() {
         super()
         this.innerHTML = `
-            <div>QUESTION PAGE</div>
             <div id="countDiv"></div>
             <div id="questionDiv">
                 <div id="frontside"></div>

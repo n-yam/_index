@@ -3,8 +3,6 @@ export default class CardAddPage extends HTMLElement {
     constructor() {
         super()
         this.innerHTML = `
-            <div>CARD ADD PAGE</div>
-            
             <div id="frontImagesDiv"></div>
             <input id="frontImageInput" type="file" accept="image/jpeg"><br>
             <textarea id="frontTextarea"></textarea>

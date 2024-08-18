@@ -5,7 +5,6 @@ export default class CardListPage extends HTMLElement {
     constructor() {
         super()
         this.innerHTML = `
-            <div>CARD LIST PAGE</div>
             <table id="cardTable">
                 <thead>
                     <tr>
