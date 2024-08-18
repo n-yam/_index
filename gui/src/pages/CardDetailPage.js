@@ -10,7 +10,7 @@ export default class CardDetailPage extends HTMLElement {
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get("id");
 
-        const url = `http://localhost:8000/api/cards/${id}`;
+        const url = `${API_SERVER}/api/cards/${id}`;
 
         fetch(url).then(async res => {
             const card = await res.json();

@@ -38,7 +38,7 @@ export default class QuestionPage extends HTMLElement {
 
         const okButton = this.querySelector("#okButton");
         okButton.onclick = event => {
-            const url = "http://localhost:8000/api/questions/first?answer=1";
+            const url = `${API_SERVER}/api/questions/first?answer=1`;
             const options = {
                 method: "POST"
             };
@@ -53,7 +53,7 @@ export default class QuestionPage extends HTMLElement {
 
         const ngButton = this.querySelector("#ngButton");
         ngButton.onclick = event => {
-            const url = "http://localhost:8000/api/questions/first?answer=0";
+            const url = `${API_SERVER}/api/questions/first?answer=0`;
             const options = {
                 method: "POST"
             };
@@ -68,7 +68,7 @@ export default class QuestionPage extends HTMLElement {
     }
 
     count() {
-        const url = "http://localhost:8000/api/questions/count";
+        const url = `${API_SERVER}/api/questions/count`;
         fetch(url).then(async res => {
             const count = await res.json();
             const countDiv = this.querySelector("#countDiv");
@@ -113,7 +113,7 @@ export default class QuestionPage extends HTMLElement {
     }
 
     async fetch_first_question() {
-        const url = "http://localhost:8000/api/questions/first";
+        const url = `${API_SERVER}/api/questions/first`;
         const response = await fetch(url);
 
         if (response.status == 200) {

@@ -33,7 +33,7 @@ export default class CardAddPage extends HTMLElement {
         backImageInput.addEventListener("change", this.handleChange);
 
         if (this.editMode) {
-            const url = `http://localhost:8000/api/cards/${this.id}`;
+            const url = `${API_SERVER}/api/cards/${this.id}`;
 
             fetch(url).then(async res => {
                 const card = await res.json();
@@ -45,7 +45,7 @@ export default class CardAddPage extends HTMLElement {
                 backTextarea.value = card.backText;
 
                 card.frontImages.forEach(frontImage => {
-                    const src = `http://localhost:8000/images/${frontImage.uuid}`;
+                    const src = `${API_SERVER}/images/${frontImage.uuid}`;
                     const img = document.createElement("img");
 
                     img.src = src;
@@ -59,7 +59,7 @@ export default class CardAddPage extends HTMLElement {
                 });
 
                 card.backImages.forEach(backImage => {
-                    const src = `http://localhost:8000/images/${backImage.uuid}`;
+                    const src = `${API_SERVER}/images/${backImage.uuid}`;
                     const img = document.createElement("img");
 
                     img.src = src;
@@ -108,13 +108,13 @@ export default class CardAddPage extends HTMLElement {
         let options;
 
         if (this.editMode) {
-            url = `http://localhost:8000/api/cards/${this.id}`;
+            url = `${API_SERVER}/api/cards/${this.id}`;
             options = {
                 method: "PUT",
                 body: formData,
             }
         } else {
-            url = `http://localhost:8000/api/cards`;
+            url = `${API_SERVER}/api/cards`;
             options = {
                 method: "POST",
                 body: formData,

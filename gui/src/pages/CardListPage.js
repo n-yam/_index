@@ -20,7 +20,7 @@ export default class CardListPage extends HTMLElement {
     }
 
     connectedCallback() {
-        const url = "http://localhost:8000/api/cards";
+        const url = `${API_SERVER}/api/cards`;
         fetch(url).then(async res => {
 
             const json = await res.json();
