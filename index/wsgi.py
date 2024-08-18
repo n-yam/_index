@@ -1,6 +1,6 @@
 import atexit
 
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -10,10 +10,16 @@ from index.controllers.card_controller import card_controller
 from index.controllers.image_controller import image_controller
 from index.controllers.question_controller import question_controller
 
-application = Flask(__name__)
+application = Flask(__name__, static_folder="static")
 application.register_blueprint(card_controller)
 application.register_blueprint(image_controller)
 application.register_blueprint(question_controller)
+
+
+@application.route("/<path:path>")
+def serve_static_files(path):
+    return send_from_directory(application.static_folder, "index.html")
+
 
 CORS(
     application,

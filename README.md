@@ -13,7 +13,10 @@ docker build -t index:0.0.1 .
 docker run -p 8000:8000 --name index --rm index:0.0.1
 ```
 
-## Usage
+## GUI Usage
+* http://localhost:8000/static/index.html
+
+## API Usage
 ```
 # Add new card
 curl -XPOST localhost:8000/api/cards -F frontText="hello" -F backText="world" -F frontImage=@dog.jpg -F frontImage=@monkey.jpg -F backImage=@pheasant.jpg
