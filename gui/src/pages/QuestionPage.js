@@ -4,6 +4,7 @@ export default class QuestionPage extends HTMLElement {
 
     constructor() {
         super()
+        this.style.display = "none";
         this.innerHTML = `
             <div id="countDiv"></div>
             <div id="questionDiv">
@@ -27,6 +28,7 @@ export default class QuestionPage extends HTMLElement {
         this.count();
         const card = await this.fetch_first_question();
         this.render(card);
+        this.style.display = "block";
 
         if (!card) return;
 
