@@ -30,7 +30,7 @@ module.exports = (env, argv) => {
         plugins: [
             new HtmlWebpackPlugin(),
             new webpack.DefinePlugin({
-                'API_SERVER': JSON.stringify(isProduction ? 'http://192.168.11.100:8000' : 'http://localhost:8000'),
+                'API_SERVER': JSON.stringify(isProduction ? 'http://192.168.11.3:8000' : 'http://localhost:8000'),
             }),
         ],
         module: {
