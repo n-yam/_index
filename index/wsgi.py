@@ -15,7 +15,13 @@ application.register_blueprint(card_controller)
 application.register_blueprint(image_controller)
 application.register_blueprint(question_controller)
 
-CORS(application, resources={r"/api/*": {"origins": config.CORS_ORIGINS}})
+CORS(
+    application,
+    resources={
+        r"/api/*": {"origins": config.CORS_ORIGINS},
+        r"/images/*": {"origins": config.CORS_ORIGINS},
+    },
+)
 
 # Setup scheduler
 scheduler = BackgroundScheduler()
